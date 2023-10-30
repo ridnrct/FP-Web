@@ -1,0 +1,494 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+.bord{
+    border: 1px solid red;
+    margin: 0;
+    padding: 0;
+}
+.nav{
+    width: 100%;
+    height: 70px;
+    display: flex;
+    background-color: #7752FE;
+}
+.logo{
+    display: flex;
+    width: 50%;
+    padding: 10px;
+}
+.logo img{
+    width: 100px;
+    margin-left: 20px;
+}
+.menu{
+    width: 50%;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+}
+.btn-menu{
+    font-family: "Poppins";
+    margin-right: 20px;
+    width: 115px;
+    height: 45px;
+    background-color: #1E1E1E;
+    color: white;
+    font-weight: bold;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+}
+.btn-menu:hover{
+    color: #1E1E1E;
+    background-color: white;
+}
+.content{
+    width: 100%;
+    height: 360px;
+    background-image: url("../Image/bg-dashboard.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.wive{
+    width: 100%;
+    margin-top: -30px;
+    height: 75px;
+    background-image: url("../Image/wave1-dashboard.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.welcome{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
+.welcome p{
+    font-family: "Oleo Script";
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+.welcome p:nth-child(1){
+    font-size: 64px;
+}
+.welcome p:nth-child(2){
+    font-size: 20px;
+    margin-top: -15px;
+}
+.search-page{
+    width: 100%;
+    height: 60px;
+    margin-top: 15px;
+    padding: 0px 350px 0 350px;
+}
+.searchbox{
+    height: 100%;
+    border-radius: 30px;
+    padding-left: 55px;
+    font-family: "Poppins";
+    background-image: url("../Image/search-icon.png");
+    background-repeat: no-repeat;
+    background-position: left;
+    background-position-x: 25px;
+    background-size: 25px;
+}
+.text-apl{
+    width: 100%;
+    height: 80px;
+    text-align: center;
+    color: rgb(100, 100, 100);
+    padding-top: 20px;
+    font-family: "Poppins";
+    font-weight: bold;
+    font-size: 18px;
+}
+.page-item{
+    margin: 0;
+    width: 100%;
+    height: auto;
+}
+.bg-container-item{
+    background-image: url("../Image/wave2-dashboard.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-y: -40px;
+    height: 260px;
+    position: absolute;
+    top: 400px;
+    z-index: -1;
+    left: 0;
+    width: 100%;
+}
+.container-item{
+    height: auto;
+    width: 100%;
+    padding: 8px 20px 5px 20px;
+    background-color: #7752FE;
+}
+.list-item{
+    width: 100%;
+    height: auto;
+    padding: 0 10px 0 10px;
+    z-index: 1;
+    margin-top: 10px;
+}
+.item{
+    width: 100%;
+    height: 250px;
+    background-color: white;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
+    padding: 15px;
+    display: flex;
+}
+.img-item{
+    height: 215px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+    background-image: url("../Image/img-item.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 40%;
+}
+.detail{
+    height: 215px;
+    padding: 0 10px 10px 20px;
+    width: 60%;    
+}
+.detail .deskirpsi{
+    margin: 0;
+    width: 100%;
+    height: 170px;
+    padding: 10px;
+    font-family: "Poppins";
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #7752FE;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.request{
+    display: flex;
+}
+.request p:nth-child(1){
+    margin-top: 6px;
+    width: 45%;
+    height: 40px;
+    padding: 6px 0 0 10px;
+    font-family: "Poppins";
+    font-size: 16px;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+    background-color: #1E1E1E;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.request p:nth-child(2){
+    width: 25%;
+}
+.detail button{
+    float: right;
+    height: 40px;
+    width: 15%;
+    margin: 6px 0 0 5px;
+    font-family: "Poppins";
+    color: white;
+    font-weight: bold;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+}
+.detail button:hover{
+    color: white;
+    background-color: #1E1E1E;
+}
+.reject{
+    background-color: #842A2A;
+}
+.accept{
+    background-color: #3E2A84;
+}
+
+/* Modal Detail */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 900px;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(1px);
+}
+.modal-content {
+    background-color: #fff;
+    margin: 100px auto;
+    margin-bottom: 0;
+    padding: 25px;
+    border: 1px solid #888;
+    width: 40%;
+    height: 700px;
+    text-align: center;
+}
+.titleModalDetail{
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+.titleModalDetail p{
+    margin: 0;
+    width: 300px;
+    background-color: #7752FE;
+    padding: 10px 15px 10px 15px;
+    color: white;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.imgModalDetail{
+    height: 300px;
+    margin-top: 10px;
+    background-image: url("../Image/img-item.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.contentModalDetail{
+    margin-top: 10px;
+    padding: 10px 30px 10px 30px;
+    height: 300px;
+    background-color: #7752FE;
+    border-radius: 10px;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.titleItemModal{
+    margin: 0;
+    padding: 10px;
+    text-align: left;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;    
+    background-color: white;
+}
+.titleItemModal p{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 16px;
+    color: #1E1E1E;
+}
+.descriptionItem{
+    margin: 10px 0;
+    height: 220px;
+    padding: 10px;
+    text-align: left;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;    
+    background-color: white;
+}
+.descriptionItem p{
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 16px;
+    color: #1E1E1E;
+}
+
+/* Modal Add Item */
+.modalAdd {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 900px;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(1px);
+}
+.modal-add {
+    background-color: #fff;
+    margin: 50px auto;
+    margin-bottom: 0;
+    padding: 25px;
+    width: 40%;
+    height: 770px;
+    text-align: center;
+    border-radius: 10px;
+}
+.titleModalAdd{
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+.titleModalAdd p{
+    margin: 0;
+    width: 300px;
+    background-color: #7752FE;
+    padding: 10px 15px 10px 15px;
+    color: white;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.imgModalAdd{
+    height: 300px;
+    margin-top: 10px;
+    background-image: url("../Image/img-item.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    border-radius: 20px;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.contentModalAdd{
+    margin-top: 10px;
+    padding: 10px 30px 10px 30px;
+    height: 280px;
+    background-color: #7752FE;
+    border-radius: 10px;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.descItem{
+    height: 180px;
+}
+.Add {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: auto;
+    padding: 10px 20px 10px 20px;
+}
+.Add:nth-child(2){
+    height: 200px;
+}
+.Add input{
+    font-family: "Poppins";
+}
+.Add textarea{
+    resize: none;
+    font-family: "Poppins";
+}
+.btn-addimg{
+    font-family: "Poppins";
+    margin-top: -30px;
+    width: 115px;
+    height: 45px;
+    background-color: #1E1E1E;
+    color: white;
+    font-weight: bold;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+}
+.btn-addimg:hover{
+    color: #1E1E1E;
+    background-color: white;
+}
+.btn-add{
+    margin-top: 10px;
+    width: 150px;
+    background-color: #3E2A84;
+    color: white;
+    font-weight: bold;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+    font-family: 'Poppins';
+}
+.btn-add:hover{
+    background-color: #1E1E1E;
+    color: white;
+}
+
+/* Modal Admin*/
+.modalAdmin {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 900px;
+    padding: 0;
+    margin: 0;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    backdrop-filter: blur(1px);
+}
+.modal-Admin {
+    background-color: #fff;
+    margin: 100px auto;
+    margin-bottom: 0;
+    padding: 25px;
+    width: 40%;
+    height: 350px;
+    text-align: center;
+    border-radius: 20px;
+}
+.ModalTitleAdmin{
+    width: 100%;
+    height: 50px;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    padding: 0;
+}
+.ModalTitleAdmin p{
+    margin: 0;
+    width: 300px;
+    background-color: #7752FE;
+    padding: 10px 15px 10px 15px;
+    color: white;
+    font-family: 'Poppins';
+    font-weight: bold;
+    font-size: 20px;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.formAdmin{
+    margin-top: 20px;
+    padding: 10px 10px 10px 10px;
+    height: 170px;
+    background-color: #7752FE;
+    border-radius: 10px;
+    box-shadow: 5px 5px 3px rgba(0, 0, 0, 0.25);
+}
+.login {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: auto;
+    padding: 10px 10px 10px 10px;
+}
+.login input{
+    height: 50px;
+    font-family: "Poppins";
+}
+.btn-log{
+    margin-top: 10px;
+    width: 100px;
+    background-color: #3E2A84;
+    color: white;
+    font-weight: bold;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+}
+.btn-log:hover{
+    background-color: #1E1E1E;
+    color: white;
+}
