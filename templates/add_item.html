@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/nav.css">
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <link rel="shortcut icon" href="/static/img/logo.png" type="image/x-icon">
+    <title>Temuan Barang Hilang</title>
+</head>
+<body>
+    {% extends "nav.html" %}
+    {% block title %}{% endblock %}
+    {% block content %}
+    <div class="content" style="height: 91vh;">
+        <div class="intro">
+            <div class="welcome">
+                <p>Welcome, {{ session['username'] }}</p>
+                <p>Aplikasi Website Penemuan Barang Hilang</p>
+                <p>Website penemuan barang hilang merupakan platform yang sangat berguna 
+                    bagi orang yang kehilangan barang-barang berharga. Melalui situs ini,
+                    pengguna dapat dengan mudah melaporkan barang yang hilang, memberikan
+                    deskripsi, dan bahkan mengunggah foto barang tersebut.
+                    Gunakan Aplikasi Website Secara Pintar & Bijaksana Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan</p>
+            </div>
+            <div class="introimg">
+                <div class="imgambar"></div>
+            </div>
+        </div>
+    </div>
+    <div id="addModal" class="modalAdd">
+        <div class="modal-add">
+            <a href="{{ url_for('dashboard') }}" class="close_logo1">BACK</a>
+            <div class="titleModalAdd">
+                <p>ADD ITEM</p>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <input type="file" name="file" accept="image/*" class="btn btn-addimg" required>*landscape image
+                <div class="contentModalAdd">
+                    <div class="Add">
+                        <input type="text" name="title" class="form-control" placeholder="Add Title" required>
+                    </div>
+                    <div class="Add">
+                        <textarea class="form-control descItem" name="description" placeholder="Input Description" required></textarea>
+                    </div>
+                </div>
+                <input type="submit" value="Add Item" class="btn btn-add">
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

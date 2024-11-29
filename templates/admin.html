@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/admin.css">
+    <link rel="shortcut icon" href="/static/img/logo.png" type="image/x-icon">
+    <title>Temuan Barang Hilang</title>
+</head>
+<body>
+    {% extends "nav.html" %}
+    {% block title %}{% endblock %}
+    {% block content %}
+    <!-- Welcome -->
+    <div class="content">
+        <div class="intro">
+            <div class="welcome">
+                <p>Admin, {{ session['usernameAdmin'] }}</p>
+                <p>Admin Aplikasi Website Penemuan Barang Hilang</p>
+            </div>
+            <div class="introimg">
+                <div class="imgambar"></div>
+            </div>
+        </div>
+    </div>
+    <div class="page-item">
+        <div class="bg-container-item"></div>
+        <div class="container-item">
+            {% for item in data %}
+            <div class="list-item">
+                <div class="item">
+                    <div class="img-item"><img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image"></div>
+                    <div class="detail">
+                        <p class="deskirpsi">{{ item.description }}</p>
+                        <div class="request">
+                            <p>{{ item.email }}</p><p></p>
+                            <form action="{{ url_for('reject_item', item_id=item.id) }}" method="post">
+                                <button type="submit" class="btn reject">REJECT</button>
+                            </form>
+                            <button type="button" class="btn edit edit-btn" data-id="{{ item.id }}" data-title="{{ item.title }}" data-description="{{ item.description }}" data-img-url="{{ url_for('uploaded_file', filename=item.img) }}">EDIT</button>
+                            <form action="{{ url_for('accept_item', item_id=item.id) }}" method="post">
+                                <button type="submit" class="btn accept">ACCEPT</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div id="contentModal" class="modal1">
+        <div class="modal1-content">
+            <div class="titleModalDetail">
+                <p>EDIT ITEM</p>
+            </div>
+            <div class="contentModalDetail">
+                <form action="{{ url_for('edit_item') }}" method="post"  id="editForm">
+                    <input type="hidden" id="editItemId" name="editItemId">
+                    <div class="titleItemModal">
+                        <input type="text" class="form-control" id="editTitle" name="editTitle" required>
+                    </div>
+                    <div class="descriptionItem">
+                        <textarea class="form-control" id="editDescription" name="editDescription" rows="3" required style="height: 180px;"></textarea>
+                    </div>
+                    <button type="submit" class="edit-mdl edit-modal" id="editButton">EDIT</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        var editModal = document.getElementById('contentModal');
+        // var editForm = document.getElementById('editForm');
+        var editButtons = document.getElementsByClassName('edit-btn');
+        // var initialFormAction = "{{ url_for('edit_item', item_id='') }}";
+
+        for (var i = 0; i < editButtons.length; i++) {
+            editButtons[i].addEventListener('click', function () {
+                editModal.style.display = 'block';
+                var title = this.getAttribute('data-title');
+                var description = this.getAttribute('data-description');
+                var item_id = this.getAttribute('data-id');
+                // editForm.action = initialFormAction.replace('placeholder', item_id);
+                document.querySelector('#editTitle').value = title;
+                document.querySelector('#editDescription').value = description;
+                document.querySelector('#editItemId').value = item_id;
+                });
+        }
+        window.onclick = function (event) {
+            if (event.target === editModal) {
+                editModal.style.display = 'none';
+                }
+        };
+    </script>
+
+    {% endblock %}
+</body>
+</html>

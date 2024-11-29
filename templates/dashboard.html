@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <link rel="shortcut icon" href="/static/img/logo.png" type="image/x-icon">
+    <title>Temuan Barang Hilang</title>
+</head>
+<body>
+    {% extends "nav.html" %}
+    {% block title %}{% endblock %}
+    {% block content %}
+    <!-- Welcome -->
+    <div class="content">
+        <div class="intro">
+            <div class="welcome">
+                <p>Welcome, {{ session['username'] }}</p>
+                <p>Aplikasi Website Penemuan Barang Hilang</p>
+                <p>Website penemuan barang hilang merupakan platform yang sangat berguna 
+                    bagi orang yang kehilangan barang-barang berharga. Melalui situs ini,
+                    pengguna dapat dengan mudah melaporkan barang yang hilang, memberikan
+                    deskripsi, dan bahkan mengunggah foto barang tersebut.
+                    Gunakan Aplikasi Website Secara Pintar & Bijaksana Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan</p>
+            </div>
+            <div class="introimg">
+                <div class="imgambar"></div>
+            </div>
+        </div>
+    </div>
+    <!-- List Item -->
+    <div class="page-item">
+        <div class="bg-container-item"></div>
+        <div class="container-item">
+            <!-- <div class="list-container"> -->
+                {% for item in data %}
+                <div class="list-item">
+                    <div class="item">
+                        <div class="img-item"><img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image"></div>
+                        <div class="detail">
+                            <p>{{ item.title }}</p>
+                            <button type="button" class="btn detailModal" data-title="{{ item.title }}" data-description="{{ item.description }}" data-img-url="{{ url_for('uploaded_file', filename=item.img) }}">DETAIL</button>
+                        </div>
+                    </div>
+                </div>
+                {% if loop.index > 0 and loop.index is divisibleby 4 %}
+                <br>
+                {% endif %}
+                {% endfor %}
+            <!-- </div> -->
+        </div>
+    </div>
+    
+    <!-- Modal Detail -->
+    <div id="contentModal" class="modal1">
+        <div class="modal1-content">
+            <div class="titleModalDetail">
+                <p>DETAIL ITEM</p>
+            </div>
+            <div class="imgModalDetail"></div>
+            <div class="contentModalDetail">
+                <div class="titleItemModal">
+                    <p></p>
+                </div>
+                <div class="descriptionItem">
+                    <p></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //Modal Detail
+        var modal_detail = document.getElementsByClassName('detailModal');
+        var modal_content_detail = document.getElementById('contentModal');
+        var titleItemModal = document.querySelector('.titleItemModal');
+        var descriptionItem = document.querySelector('.descriptionItem')
+        var imgModalDetail = document.querySelector('.imgModalDetail');
+
+        for (var i = 0; i < modal_detail.length; i++) {
+            modal_detail[i].addEventListener('click', function() {
+                var title = this.getAttribute('data-title');
+                var description = this.getAttribute('data-description');
+                var img_url = this.getAttribute('data-img-url'); 
+                titleItemModal.innerHTML = '<p>' + title + '</p>';
+                descriptionItem.innerHTML = '<p>' + description + '</p>';
+                imgModalDetail.innerHTML = '<img src="' + img_url + '" alt="' + title + ' Image">';
+                modal_content_detail.style.display = "block";
+                window.onclick = function(event) {
+                    if (event.target == modal_content_detail) {
+                        modal_content_detail.style.display = "none";
+                    }
+                };
+            });
+        }
+    </script>
+    {% endblock %}
+</body>
+</html>
