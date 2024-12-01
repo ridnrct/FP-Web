@@ -195,22 +195,6 @@ def accept_item(item_id):
     cursor.close()
     return redirect(url_for('admin', reload=True))
 
-# # Delete Automatic
-# def delete_accepted_data():
-#     with app.app_context():
-#         try:
-#             cursor = mysql.connection.cursor()
-#             delete_query = "DELETE FROM tbl_item_user WHERE status = 'accepted' AND timestamp_column < %s"
-#             threshold_time = datetime.now() - timedelta(minutes=1)
-#             cursor.execute(delete_query, (threshold_time,))
-#             mysql.connection.commit()
-#             print(f"Old accepted data deleted at {datetime.now()}")
-#         except Exception as e:
-#             print(f"Error deleting old accepted data: {e}")
-#         finally:
-#             cursor.close()
-# schedule.every(1).minutes.do(delete_accepted_data)
-
 def delete_accepted_data():
     with app.app_context():
         try:
