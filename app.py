@@ -137,7 +137,7 @@ def delete_item():
 # Route add item session
 @app.route('/add_item')
 def additem():
-    if 'loggedin' in session:
+    if 'loggedin' or 'loggedinAdmin' in session:
         return render_template('add_item.html')
     msg = 'Please login !'
     return render_template('login.html', msg = msg)

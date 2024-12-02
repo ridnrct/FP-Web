@@ -11,34 +11,29 @@
         <title>{% block title %}{% endblock %}</title>
     </head>
 <body>
-    <div class="nav">
-        <div class="logo">
-            <a href="{{ url_for('dashboard') }}"><img src="/static/img/logo.png"></a>
-        </div>
-        <div class="menu">
-            <a type="button" class="btn btn-menu" href="{{ url_for('add_item') }}">Add Item</a>
-            <a type="button" class="btn btn-menu" href="#">About</a>
-            <a type="button" class="btn btn-menu" href="{{ url_for('logout') }}">Logout</a>
-        </div>
-    </div>
-
-    <!-- Modal Error Login Admin -->
-    <!-- <div id="errorModal" class="errorAdmin">
-        <div class="error-Admin">
-            <div class="ErrorTitleAdmin">
-                <p>LOGIN ADMIN FAILED</p>
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <img src="/static/img/logo.png" alt="Logo" style="width: 80px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-menu" href="{{ url_for('add_item') }}">Add Item</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-menu" href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-menu" href="{{ url_for('logout') }}">Logout</a>
+                    </li>
+                </ul>
             </div>
         </div>
-    </div> -->
-
-    <!-- <script>
-        $(document).ready(function(){
-        var error = '{{ request.args.get("msgAdmin") }}';
-        if (error) {
-            $('#errorModal').modal('block');
-            }
-        });
-    </script> -->
+    </div>
     {% block content %}{% endblock %}
 </body>
 </html>

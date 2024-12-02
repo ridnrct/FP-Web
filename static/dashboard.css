@@ -1,6 +1,7 @@
-body{
+body {
     margin: 0;
     padding: 0;
+    overflow-x: hidden; 
 }
 .bord{
     border: 1px solid red;
@@ -9,15 +10,20 @@ body{
 }
 .content{
     width: 100%;
+    margin: 0 auto; 
+    padding: 0;
+    box-sizing: border-box; 
     height: 360px;
     background-image: url("/static/img/bg-dashboard.png");
     background-repeat: no-repeat;
     background-size: cover;
-    padding-top: 30px;
 }
 .intro{
-    height: 285px;
     display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between;
+    padding: 0;
+    margin: 0;
 }
 .welcome{
     text-align: left;
@@ -48,21 +54,53 @@ body{
     font-weight: bold;
     color: rgba(255, 255, 255, 0.795);
 }
-.introimg{
-    width: 40%;
-    padding-left: 200px;
+.introimg {
+    width: 100%; /* Pastikan elemen mengambil penuh lebar wadahnya */
+    max-width: 600px; /* Batasi lebar maksimum */
+    padding-left: 0; 
+    padding-top: 30px;
+    display: flex;
+    justify-content: center;
+    margin: 0 auto; /* Untuk memastikan elemen berada di tengah */
+    transform: rotate(deg);
 }
-.imgambar{
-    background-image: url("/static/img/gambar-login.png");
-    background-size: contain;
-    width: 300px;
-    height: 400px;
-    background-repeat: no-repeat;
-    transform: rotate(20deg);
+
+.img-container {
+    width: 100%;
+    max-width: 400px; /* Batas ukuran maksimum wadah */
+    aspect-ratio: 3 / 1; /* Menyesuaikan proporsi lebar dan tinggi */
+    overflow: hidden; /* Menghindari gambar keluar dari batas */
     border-radius: 10px; 
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: white;
+    position: relative; /* Agar isi tetap pada posisi */
 }
+
+.imgambar {
+    background-image: url("/static/img/gambar-login.png");
+    background-size: cover; /* Gambar memenuhi seluruh wadah */
+    width: 100%; /* Pastikan gambar menyesuaikan ukuran .introimg */
+    max-width: 500px; /* Batasi lebar maksimum gambar */
+    height: 300px; /* Tetapkan tinggi tetap untuk mencegah kolaps */
+    border-radius: 10px; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-repeat: no-repeat;
+    background-position: center; /* Pusatkan gambar */
+    background-color: white; /* Warna latar sebagai fallback */
+}
+
+@media (max-width: 768px) {
+    .img-container {
+        max-width: 300px; /* Sesuaikan ukuran untuk layar kecil */
+    }
+}
+
+@media (max-width: 480px) {
+    .img-container {
+        max-width: 200px; /* Sesuaikan lagi untuk perangkat lebih kecil */
+    }
+}
+
 .page-item{
     margin: 0;
     width: 100%;
@@ -87,10 +125,6 @@ body{
     left: 0;
     width: 100%;
 }
-/* .list-container {
-    display: flex;
-    justify-content: space-between;
-} */
 .list-item{
     width: 25%;
     height: 100%;
@@ -243,4 +277,100 @@ body{
     font-weight: bold;
     font-size: 16px;
     color: #1E1E1E;
+}
+
+
+@media (max-width: 768px) {
+    .content {
+        height: auto;
+        padding-top: 20px;
+    }
+    .intro {
+        flex-direction: column;
+        height: auto;
+    }
+    .welcome {
+        width: 100%;
+        padding: 10px;
+    }
+    .welcome p:nth-child(1) {
+        font-size: 32px;
+        line-height: 1.2;
+    }
+    .welcome p:nth-child(2) {
+        font-size: 24px;
+    }
+    .welcome p:nth-child(3) {
+        font-size: 14px;
+    }
+    .introimg {
+        width: 100%;
+        padding-left: 0;
+        text-align: center;
+    }
+    .imgambar {
+        width: 200px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-item {
+        height: auto;
+    }
+    .container-item {
+        flex-direction: column;
+        align-items: center;
+    }
+    .list-item {
+        width: 90%;
+        margin: 10px 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal1-content {
+        width: 90%;
+        height: auto;
+        padding: 15px;
+    }
+    .titleModalDetail p {
+        width: auto;
+        font-size: 16px;
+        padding: 5px 10px;
+    }
+    .imgModalDetail {
+        height: 200px;
+    }
+    .contentModalDetail {
+        height: auto;
+        padding: 10px;
+    }
+    .descriptionItem {
+        height: auto;
+    }
+}
+@media (max-width: 480px) {
+    .welcome p:nth-child(1) {
+        font-size: 24px;
+    }
+    .welcome p:nth-child(2) {
+        font-size: 18px;
+    }
+    .imgambar {
+        width: 150px;
+        height: 200px;
+    }
+    .list-item {
+        width: 100%;
+    }
+    .modal1-content {
+        padding: 10px;
+        width: 95%;
+    }
+}
+@media (max-width: 1500px) {
+    .imgambar {
+        display: none; /* Menyembunyikan gambar hanya */
+    }
 }
