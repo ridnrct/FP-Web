@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,9 +12,7 @@
     <title>Temuan Barang Hilang</title>
 </head>
 <body>
-    {% extends "nav.html" %}
-    {% block title %}{% endblock %}
-    {% block content %}
+
     <div class="content" style="height: 91vh;">
         <div class="intro">
             <div class="welcome">
@@ -49,6 +47,62 @@
             </form>
         </div>
     </div>
-    {% endblock %}
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Barang Hilang</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="/static/css/util.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/main.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@700&family=Poppins:wght@300;600;700&display=swap" rel="stylesheet">
+	<link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
+    <style>
+        .container-login100 {
+            background: #cc2b5e;  
+            background: -webkit-linear-gradient(to left, #A230FF, #5a06b5);  /* Chrome 10-25, Safari 5.1-6 */
+            background: linear-gradient(to left, #A230FF, #5a06b5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+        }
+    </style>
+</head>
+<body>
+	
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<div class="login100-form-title" style="background-image: url(/static/img/gambar-login.png)">
+					<span class="login100-form-title-1" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+						Sign In Admin
+					</span>
+				</div>
+
+				<form class="login100-form validate-form form-login" action="{{ url_for('log_admin') }}" method="post">
+                    <div class="msg" style="color: red;">{{ msg }}</div>
+					<div class="wrap-input100 validate-input m-b-26 login" data-validate="Email is required">
+						<span class="label-input100" style="font-family: 'Poppins', sans-serif;">Email</span>
+						<input id="emailAdmin" class="input100 emailAdmin" type="text" name="emailAdmin" placeholder="Enter Email Admin" style="font-family: 'Poppins', sans-serif;">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18 login" data-validate = "Password is required">
+						<span class="label-input100" style="font-family: 'Poppins', sans-serif;">Password</span>
+						<input id="passwordAdmin" class="input100 passwordAdmin" type="password" name="passwordAdmin" placeholder="Enter Password" style="font-family: 'Poppins', sans-serif;">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="container-login100-form-btn flex-sb-m w-full p-b-30">
+                        <input class="login100-form-btn" type="submit" value="Login" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<script src="/static/js/main.js"></script>
+
 </body>
 </html>

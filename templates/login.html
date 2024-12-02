@@ -1,38 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/static/login-style.css">
-    <link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
-    <title>Temuan Barang Hilang</title>
-</head>
-<body>
-    <div class="page">
-        <div class="form-log">
-            <p>Welcome</p>
-            <p>Aplikasi Temuan Barang Hilang</p>
-            <form action="{{ url_for('login') }}" method="post" class="form-login">
-                <div class="msg" style="color: red;">{{ msg }}</div>
-                <div class="login">
-                    <input id="email" name="email" type="text" placeholder="Enter Your Email" class="form-control"/></br>
-                </div>
-                <div class="login">
-                    <input id="password" name="password" type="password" placeholder="Enter Your Password" class="form-control"/></br>
-                </div>
-                <input type="submit" class="btn btn-log" value="LOGIN"></br></br>
-            </form>
-        </div>
-        <div class="image">
-            <div class="gambar"></div>
-        </div>
-    </div>
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -48,7 +13,7 @@
 	<link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
     <style>
         .container-login100 {
-            background: #cc2b5e;  /* fallback for old browsers */
+            background: #cc2b5e;  
             background: -webkit-linear-gradient(to left, #A230FF, #5a06b5);  /* Chrome 10-25, Safari 5.1-6 */
             background: linear-gradient(to left, #A230FF, #5a06b5); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
         }
@@ -83,7 +48,7 @@
                         <input class="login100-form-btn" type="submit" value="Login" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
                         <div>
 							<p href="#" class="txt1" style="font-family: 'Poppins', sans-serif;">
-								Don't have account? <a href="#">Sign Up</a>
+								Don't have account? <a href="{{ url_for('register') }}">Sign Up</a>
                             </p>
 						</div>
 					</div>

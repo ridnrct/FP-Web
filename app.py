@@ -45,20 +45,29 @@ def login():
             msg = 'Incorrect email / password !'
     return render_template('login.html', msg = msg)
 
-# Route Admin Show Data
-@app.route('/admin')
-def admin():
-    if 'loggedinAdmin' in session:
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    msg = ''
+    if request.method == 'POST' and 'email' in request.form and 'password' in request.form and 'username' in request.form:
+        email = request.form['email']
+        password = request.form['password']
+        username = request.form['username']
+        
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM tbl_item')
-        data = cursor.fetchall()
-        return render_template('admin.html', data=data)
-    msg = 'Please login !'
-    return render_template('log_admin.html', msg=msg)
+        cursor.execute('SELECT * FROM user_login WHERE email = %s', (email,))
+        account = cursor.fetchone()
+        
+        if account:
+            msg = 'Email is already registered!'
+        else:
+            cursor.execute('INSERT INTO user_login (email, password, username) VALUES (%s, %s, %s)', (email, password, username))
+            mysql.connection.commit()
+            return render_template('register.html', msg=msg, success=True)
+    return render_template('register.html', msg=msg, success=False)
 
-# Route Admin Login
-@app.route('/admin', methods=['POST'])
+@app.route('/admin_login', methods=['GET', 'POST'])
 def log_admin():
+    msg = ''
     if request.method == 'POST' and 'emailAdmin' in request.form and 'passwordAdmin' in request.form:
         email = request.form['emailAdmin']
         password = request.form['passwordAdmin']
@@ -68,18 +77,26 @@ def log_admin():
         if account:
             session['loggedinAdmin'] = True
             session['emailAdmin'] = account['email']
-            session['passwordAdmin'] = account['password']
             session['usernameAdmin'] = account['username']
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT * FROM tbl_item')
-            data = cursor.fetchall()
-            return render_template('admin.html', data=data)
-    return render_template('log_admin.html', msg='Login failed')
+            return redirect(url_for('admin_dashboard'))
+        else:
+            msg = 'Incorrect email or password!'
+    return render_template('log_admin.html', msg=msg)
+
+
+@app.route('/admin_dashboard', methods=['GET'])
+def admin_dashboard():
+    if 'loggedinAdmin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM tbl_item')
+        data = cursor.fetchall()
+        return render_template('admin.html', data=data)
+    return redirect(url_for('log_admin'))
 
 # Route Logout User and Admin
 @app.route('/logout')
 def logout():
-    if 'loggedin' in session:
+    if 'loggedin' or 'loggedinAdmin' in session:
         session.pop('loggedin', None)
         session.pop('loggedinAdmin', None)
         return redirect(url_for('login'))
