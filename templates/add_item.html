@@ -11,27 +11,58 @@
     <link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
     <title>Barang Hilang</title>
 </head>
-<body>
+<body>  
     {% extends "nav.html" %}
     {% block title %}{% endblock %}
     {% block content %}
-    <div class="content" style="height: 91vh;">
-        <div class="intro">
-            <div class="welcome">
-                <p>Welcome, {{ session['username'] }}</p>
-                <p>Aplikasi Website Penemuan Barang Hilang</p>
-                <p>Website penemuan barang hilang merupakan platform yang sangat berguna 
-                    bagi orang yang kehilangan barang-barang berharga. Melalui situs ini,
-                    pengguna dapat dengan mudah melaporkan barang yang hilang, memberikan
-                    deskripsi, dan bahkan mengunggah foto barang tersebut.
-                    Gunakan Aplikasi Website Secara Pintar & Bijaksana Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan</p>
+    <div class="welcome-area" id="welcome">
+        <div class="header-text">
+            <div class="container" style="margin-top: -150px;">
+                <div class="row">
+                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12 text-center">
+                        <h1><strong>{{ session['username'] }}</strong></h1>
+                    </div>
+                        <p style=" margin-top: -20px;">
+                            Gunakan Website Secara Pintar & Bijaksana, Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan.
+                        </p>
+                </div>
             </div>
-            <div class="introimg">
-                <div class="imgambar"></div>
+        </div>
+    
+        <!-- Bagian Input Formulir -->
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!-- Kotak memanjang -->
+                    <div class="features-large-item add-item" style="padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #f9f9f9;">
+                        <h5 class="features-title" style="font-size: 24px; font-weight: bold; margin-bottom: 10px; text-align: center;">Add Your Item</h5>
+                        <form method="post" enctype="multipart/form-data" style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 200px;">
+                                <label for="file" style="font-weight: bold;">Upload Image:</label>
+                                <input type="file" name="file" id="file" accept="image/*" class="form-control" required style="margin-top: 5px;">
+                                <small style="color: #666;">*landscape image</small>
+                            </div>
+                            <div style="flex: 1; min-width: 200px;">
+                                <label for="title" style="font-weight: bold;">Title:</label>
+                                <input type="text" name="title" id="title" class="form-control" placeholder="Add Title" required style="margin-top: 5px;">
+                            </div>
+                            <div style="flex: 1; min-width: 200px;">
+                                <label for="description" style="font-weight: bold;">Description:</label>
+                                <textarea class="form-control descItem" name="description" id="description" placeholder="Input Description" required style="margin-top: 5px; height: 100px;"></textarea>
+                            </div>
+                            <div style="flex-basis: 100%; text-align: right;">
+                                <input type="submit" value="Add Item" class="btn btn-add" style="background-color: #007bff; color: #fff; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer;">
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <div id="addModal" class="modalAdd">
+    
+    
+    
+    <!-- <div id="addModal" class="modalAdd">
         <div class="modal-add">
             <a href="{{ url_for('dashboard') }}" class="close_logo1">BACK</a>
             <div class="titleModalAdd">
@@ -50,7 +81,7 @@
                 <input type="submit" value="Add Item" class="btn btn-add">
             </form>
         </div>
-    </div>
+    </div> -->
     {% endblock %}
 </body>
 </html>

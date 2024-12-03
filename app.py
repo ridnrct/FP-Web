@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Flask, flash, render_template, request, redirect, url_for, session, send_from_directory
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
 import os
@@ -166,7 +166,7 @@ def add_item():
                     )
                     mysql.connection.commit()
                     cursor.close()
-            print("Redirecting to dashboard")
+                    flash('Pengajuan item berhasil! Menunggu persetujuan admin.', 'success')
             return redirect(url_for('dashboard'))
         print("Redirecting to additem")
         return redirect(url_for('additem'))

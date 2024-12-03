@@ -683,11 +683,13 @@ welcome
     top: 65% !important;
     transform: perspective(1px) translateY(-60%) !important;
     text-align: center;
+    padding-top: -100px;
   }
   .welcome-area .header-text h1 {
     text-align: center;
     color: #fff;
     margin-bottom: 15px;
+    margin-top: -100px;
   }
   .welcome-area .header-text h1 span {
     color: #fff;
@@ -695,7 +697,6 @@ welcome
   .welcome-area .header-text p {
     text-align: center;
     color: #fff;
-    margin-bottom: 20px;
   }
 }
 
@@ -708,19 +709,23 @@ welcome
     font-size: 22px;
     line-height: 30px;
     margin-bottom: 15px;
+    margin-top: -50px;
   }
   .welcome-area .header-text p {
     margin-bottom: 20px;
   }
 }
 
-@media (max-width: 765px) {
+
+
+@media (max-width: 768px) {
   .welcome-area {
-    margin-bottom: 100px;
+    margin-bottom: 0px;
+    height: auto;
   }
   .welcome-area .header-text {
-    top: 50% !important;
-    transform: perspective(1px) translateY(-50%) !important;
+    top: 45% !important;
+    transform: perspective(1px) translateY(-45%) !important;
     text-align: center;
   }
   .welcome-area .header-text .buttons {
@@ -731,6 +736,7 @@ welcome
     font-size: 24px !important;
     line-height: 30px !important;
     margin-bottom: 30px !important;
+    margin-top: 0;
   }
   .welcome-area .header-text h1 span {
     color: #fff;
@@ -742,6 +748,17 @@ welcome
     line-height: 22px;
     margin-bottom: 40px;
   }
+}
+@media(max-width:500px){
+  .welcome-area .header-text {
+    display: none;
+  }
+  .add-item{
+    margin-top: 130px !important;
+  }
+}
+.add-item{
+  margin-top: 300px;
 }
 
 
