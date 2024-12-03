@@ -15,88 +15,92 @@
     {% block title %}{% endblock %}
     {% block content %}
     <!-- Welcome -->
-    <div class="content">
-        <div class="intro">
-            <div class="welcome">
-                <p>Welcome, {{ session['username'] }}</p>
-                <p>Aplikasi Website Penemuan Barang Hilang</p>
-                <p>Website penemuan barang hilang merupakan platform yang sangat berguna 
-                    bagi orang yang kehilangan barang-barang berharga. Melalui situs ini,
-                    pengguna dapat dengan mudah melaporkan barang yang hilang, memberikan
-                    deskripsi, dan bahkan mengunggah foto barang tersebut.
-                    Gunakan Aplikasi Website Secara Pintar & Bijaksana Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan</p>
-            </div>
-            <div class="introimg">
-                <div class="imgambar"></div>
+    <div class="welcome-area" id="welcome">
+        <div class="header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                        <h1>Welcome,<br><strong>{{ session['username'] }}</strong></h1>
+                    </div>
+                    <p> Website penemuan barang hilang merupakan platform yang sangat berguna bagi orang yang kehilangan barang-barang berharga. Melalui situs ini,<br>
+                        pengguna dapat dengan mudah melaporkan barang yang hilang, memberikan deskripsi, dan bahkan mengunggah foto barang tersebut.
+                        Gunakan Aplikasi Website Secara Pintar & Bijaksana Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan</p>
+                </div>
             </div>
         </div>
+        <!-- ***** Header Text End ***** -->
+        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1" d="M0,288L48,266.7C96,245,192,203,288,192C384,181,480,203,576,224C672,245,768,267,864,272C960,277,1056,267,1152,250.7C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
     </div>
-    <!-- List Item -->
-    <div class="page-item">
-        <div class="bg-container-item"></div>
-        <div class="container-item">
-            <!-- <div class="list-container"> -->
-                {% for item in data %}
-                <div class="list-item">
-                    <div class="item">
-                        <div class="img-item"><img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image"></div>
-                        <div class="detail">
-                            <p>{{ item.title }}</p>
-                            <button type="button" class="btn detailModal" data-title="{{ item.title }}" data-description="{{ item.description }}" data-img-url="{{ url_for('uploaded_file', filename=item.img) }}">DETAIL</button>
+    <!-- ***** Features Small Start ***** -->
+    <!-- <section class="section home-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="assets/images/featured-item-01.png" alt=""></i>
+                                </div>
+                                <h5 class="features-title">Modern Strategy</h5>
+                                <p>Customize anything in this template to fit your website needs</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="assets/images/featured-item-01.png" alt=""></i>
+                                </div>
+                                <h5 class="features-title">Best Relationship</h5>
+                                <p>Contact us immediately if you have a question in mind</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
+                            <div class="features-small-item">
+                                <div class="icon">
+                                    <i><img src="assets/images/featured-item-01.png" alt=""></i>
+                                </div>
+                                <h5 class="features-title">Ultimate Marketing</h5>
+                                <p>You just need to tell your friends about our free templates</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {% if loop.index > 0 and loop.index is divisibleby 4 %}
-                <br>
-                {% endif %}
-                {% endfor %}
-            <!-- </div> -->
-        </div>
-    </div>
-    
-    <!-- Modal Detail -->
-    <div id="contentModal" class="modal1">
-        <div class="modal1-content">
-            <div class="titleModalDetail">
-                <p>DETAIL ITEM</p>
-            </div>
-            <div class="imgModalDetail"></div>
-            <div class="contentModalDetail">
-                <div class="titleItemModal">
-                    <p></p>
-                </div>
-                <div class="descriptionItem">
-                    <p></p>
-                </div>
             </div>
         </div>
-    </div>
+    </section> -->
+    <section class="section home-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        {% for item in data %}
+                        <!-- ***** Features Small Item Start ***** -->
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after {{ loop.index * 0.2 }}s">
+                            <div class="features-small-item">
+                                <div class="image-container" style="position: relative; width: 100%; padding-top: 75%; overflow: hidden; border-radius: 8px;">
+                                    <img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <h5 class="features-title" style="margin-top: 10px;">{{ item.title }}</h5>
+                                <p style="font-size: 14px;">{{ item.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container">
+                <div class="col-lg-12">
+                    <p class="copyright">Copyright &copy; 2024 Barang Hilang Website - Design: TeamCC</p>
+                </div>
+        </div>
+    </footer>
 
-    <script>
-        //Modal Detail
-        var modal_detail = document.getElementsByClassName('detailModal');
-        var modal_content_detail = document.getElementById('contentModal');
-        var titleItemModal = document.querySelector('.titleItemModal');
-        var descriptionItem = document.querySelector('.descriptionItem')
-        var imgModalDetail = document.querySelector('.imgModalDetail');
-
-        for (var i = 0; i < modal_detail.length; i++) {
-            modal_detail[i].addEventListener('click', function() {
-                var title = this.getAttribute('data-title');
-                var description = this.getAttribute('data-description');
-                var img_url = this.getAttribute('data-img-url'); 
-                titleItemModal.innerHTML = '<p>' + title + '</p>';
-                descriptionItem.innerHTML = '<p>' + description + '</p>';
-                imgModalDetail.innerHTML = '<img src="' + img_url + '" alt="' + title + ' Image">';
-                modal_content_detail.style.display = "block";
-                window.onclick = function(event) {
-                    if (event.target == modal_content_detail) {
-                        modal_content_detail.style.display = "none";
-                    }
-                };
-            });
-        }
-    </script>
     {% endblock %}
 </body>
 </html>

@@ -9,31 +9,44 @@
         <link rel="stylesheet" href="/static/nav.css">
         <link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
         <title>{% block title %}{% endblock %}</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway:100,300,400,500,700,900" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/static/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/font-awesome.css">
+        <link rel="stylesheet" href="/static/css/templatemo-softy-pinko.css">
     </head>
 <body>
-    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
-                <img src="/static/img/logo.png" alt="Logo" style="width: 80px;">
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-menu" href="{{ url_for('add_item') }}">Add Item</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-menu" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link btn btn-menu" href="{{ url_for('logout') }}">Logout</a>
-                    </li>
-                </ul>
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <a href="{{ url_for('dashboard') }}" class="logo">
+                            <img src="/static/img/logo2.png" alt="Barang Hilang"/>
+                        </a>
+                        <ul class="nav">
+                            <li><a href="{{ url_for('add_item') }}" style="font-size: 14px;">Add Item</a></li>
+                            <li><a href="#" style="font-size: 14px;">About</a></li>
+                            <li><a href="{{ url_for('logout') }}" style="font-size: 14px;">Logout</a></li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
             </div>
         </div>
-    </div>
+    </header>
+        <!-- jQuery -->
+        <script src="/static/js/jquery-2.1.0.min.js"></script>
+
+        <!-- Plugins -->
+        <script src="/static/js/scrollreveal.min.js"></script>
+        <script src="/static/js/waypoints.min.js"></script>
+        <script src="/static/js/jquery.counterup.min.js"></script>
+        <script src="/static/js/imgfix.min.js"></script> 
+        
+        <!-- Global Init -->
+        <script src="/static/js/custom.js"></script>
     {% block content %}{% endblock %}
 </body>
 </html>

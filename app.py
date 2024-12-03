@@ -182,7 +182,7 @@ def reject_item(item_id):
     cursor.execute('DELETE FROM tbl_item WHERE id = %s', (item_id,))
     mysql.connection.commit()
     cursor.close()
-    return redirect(url_for('admin', reload=True))
+    return redirect(url_for('admin_dashboard', reload=True))
 
 # Route Edit
 @app.route('/edit_item', methods=['POST'])
@@ -195,7 +195,7 @@ def edit_item():
         cursor.execute('UPDATE tbl_item SET title=%s, description=%s WHERE id=%s', (new_title, new_description, item_id))
         mysql.connection.commit()
         cursor.close()
-        return redirect(url_for('admin', reload=True))
+        return redirect(url_for('admin_dashboard', reload=True))
 
 
 # Route Accept
@@ -210,7 +210,7 @@ def accept_item(item_id):
     cursor.execute('DELETE FROM tbl_item WHERE id = %s', (item_id,))
     mysql.connection.commit()
     cursor.close()
-    return redirect(url_for('admin', reload=True))
+    return redirect(url_for('admin_dashboard', reload=True))
 
 def delete_accepted_data():
     with app.app_context():
