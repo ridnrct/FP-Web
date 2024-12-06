@@ -28,17 +28,6 @@
                 </div>
 
                 <form class="login100-form validate-form form-register" action="{{ url_for('register') }}" method="post">
-                    <!-- Pesan Error atau Sukses -->
-                    {% if msg %}
-                    <div class="alert alert-danger" role="alert" style="font-family: 'Poppins', sans-serif;">
-                        {{ msg }}
-                    </div>
-                    {% endif %}
-                    {% if success %}
-                    <div class="alert alert-success" role="alert" style="font-family: 'Poppins', sans-serif;">
-                        Account successfully created! Please <a href="{{ url_for('login') }}">log in</a>.
-                    </div>
-                    {% endif %}
 
                     <!-- Input Username -->
                     <div class="wrap-input100 validate-input m-b-26 login" data-validate="Username is required">
