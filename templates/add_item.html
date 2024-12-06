@@ -20,7 +20,16 @@
             <div class="container" style="margin-top: -150px;">
                 <div class="row">
                     <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12 text-center">
-                        <h1><strong>{{ session['username'] }}</strong></h1>
+                        <h1>
+                            <strong>
+                              {% if session['loggedinAdmin'] %}
+                                {{ session['usernameAdmin'] }}
+                              {% elif session['loggedin'] %}
+                                {{ session['username'] }}
+                              {% endif %}
+                            </strong>
+                          </h1>
+                          
                     </div>
                         <p style=" margin-top: -20px;">
                             Gunakan Website Secara Pintar & Bijaksana, Setiap Perbuatan Merupakan Tanggung Jawab yang Bersangkutan.

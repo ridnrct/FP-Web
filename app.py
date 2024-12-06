@@ -52,11 +52,10 @@ def register():
         email = request.form['email']
         password = request.form['password']
         username = request.form['username']
-        
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        session.pop('loggedinAdmin', None)
         cursor.execute('SELECT * FROM user_login WHERE email = %s', (email,))
         account = cursor.fetchone()
-        
         if account:
             msg = 'Email is already registered!'
         else:
@@ -72,13 +71,14 @@ def log_admin():
         email = request.form['emailAdmin']
         password = request.form['passwordAdmin']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        session.pop('loggedin', None)
         cursor.execute('SELECT * FROM admin_login WHERE email = %s AND password = %s', (email, password,))
         account = cursor.fetchone()
         if account:
             session['loggedinAdmin'] = True
             session['emailAdmin'] = account['email']
             session['usernameAdmin'] = account['username']
-            return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('admin'))
         else:
             msg = 'Incorrect email or password!'
     return render_template('log_admin.html', msg=msg)
@@ -93,12 +93,20 @@ def admin_dashboard():
         return render_template('admin.html', data=data)
     return redirect(url_for('log_admin'))
 
+@app.route('/admin', methods=['GET'])
+def admin():
+    if 'loggedinAdmin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM tbl_item_user')
+        data = cursor.fetchall()
+        return render_template('dashboard_admin.html', data=data)
+    return redirect(url_for('log_admin'))
+
 # Route Logout User and Admin
 @app.route('/logout')
 def logout():
     if 'loggedin' or 'loggedinAdmin' in session:
-        session.pop('loggedin', None)
-        session.pop('loggedinAdmin', None)
+        session.clear()
         return redirect(url_for('login'))
     msg = 'Please login !'
     return render_template('login.html', msg = msg)
@@ -111,16 +119,16 @@ def uploaded_file(filename):
 # Route dashboard show data
 @app.route('/dashboard')
 def dashboard():
-    if 'loggedin' in session:
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM tbl_item_user')
-        data = cursor.fetchall()
-        return render_template('dashboard.html', data=data)
     if 'loggedinAdmin' in session:
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM tbl_item_user')
         data = cursor.fetchall()
         return render_template('dashboard_admin.html', data=data)
+    elif 'loggedin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM tbl_item_user')
+        data = cursor.fetchall()
+        return render_template('dashboard.html', data=data)
     return redirect(url_for('login'))
 
 #Delete item as Admin
@@ -147,13 +155,14 @@ def allowed_file(filename):
 # Route add item add data
 @app.route('/add_item', methods=['GET', 'POST'])
 def add_item():
-    print("Inside add_item route")
-    if 'loggedin' in session:
-        print("User is logged in")
+    if 'loggedin' or 'loggedinAdmin' in session:
         if request.method == 'POST':
             title = request.form['title']
             description = request.form['description']
-            email = session['email']
+            if 'loggedin' in session:
+                email = session['email']
+            elif 'loggedinAdmin' in session:
+                email = session['emailAdmin']  
             if 'file' in request.files:
                 file = request.files['file']
                 if file and allowed_file(file.filename):

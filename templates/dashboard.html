@@ -14,7 +14,6 @@
     {% extends "nav.html" %}
     {% block title %}{% endblock %}
     {% block content %}
-    <!-- Welcome -->
     <div class="welcome-area" id="welcome">
         <div class="header-text">
             <div class="container">
@@ -28,56 +27,16 @@
                 </div>
             </div>
         </div>
-        <!-- ***** Header Text End ***** -->
         <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#ffffff" fill-opacity="1" d="M0,288L48,266.7C96,245,192,203,288,192C384,181,480,203,576,224C672,245,768,267,864,272C960,277,1056,267,1152,250.7C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
     </div>
-    <!-- ***** Features Small Start ***** -->
-    <!-- <section class="section home-feature">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.2s">
-                            <div class="features-small-item">
-                                <div class="icon">
-                                    <i><img src="assets/images/featured-item-01.png" alt=""></i>
-                                </div>
-                                <h5 class="features-title">Modern Strategy</h5>
-                                <p>Customize anything in this template to fit your website needs</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.4s">
-                            <div class="features-small-item">
-                                <div class="icon">
-                                    <i><img src="assets/images/featured-item-01.png" alt=""></i>
-                                </div>
-                                <h5 class="features-title">Best Relationship</h5>
-                                <p>Contact us immediately if you have a question in mind</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after 0.6s">
-                            <div class="features-small-item">
-                                <div class="icon">
-                                    <i><img src="assets/images/featured-item-01.png" alt=""></i>
-                                </div>
-                                <h5 class="features-title">Ultimate Marketing</h5>
-                                <p>You just need to tell your friends about our free templates</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
     <section class="section home-feature">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="row">
                         {% for item in data %}
-                        <!-- ***** Features Small Item Start ***** -->
                         <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after {{ loop.index * 0.2 }}s">
                             <div class="features-small-item">
                                 <div class="image-container" style="position: relative; width: 100%; padding-top: 75%; overflow: hidden; border-radius: 8px;">
@@ -87,7 +46,6 @@
                                 <p class="description">{{ item.description }}</p>
                             </div>
                         </div>
-                        <!-- ***** Features Small Item End ***** -->
                         {% endfor %}
                     </div>
                 </div>
@@ -96,14 +54,13 @@
     </section>
     
     <style>
-    /* Gaya untuk deskripsi */
     .description {
         font-size: 14px;
         margin-top: -10px;
-        line-height: 1.5; /* Jarak antar baris */
-        word-wrap: break-word; /* Memastikan teks panjang tetap membungkus */
-        white-space: normal; /* Membiarkan teks membungkus secara alami */
-        overflow: hidden; /* Menyembunyikan bagian teks di luar batas */
+        line-height: 1.5; 
+        word-wrap: break-word; 
+        white-space: normal; 
+        overflow: hidden; 
     }
     </style>
     

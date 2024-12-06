@@ -24,7 +24,11 @@
             {% endfor %}
         {% endif %}
     {% endwith %}
-    
+    <style>
+        .nav li{
+            font-size: 14px;
+        }
+    </style>
     <header class="header-area header-sticky">
         <div class="container">
             <div class="row">
@@ -34,10 +38,22 @@
                             <img src="/static/img/logo2.png" alt="Barang Hilang"/>
                         </a>
                         <ul class="nav">
-                            <li><a href="{{ url_for('dashboard') }}" style="font-size: 14px;">Home</a></li>
-                            <li><a href="{{ url_for('add_item') }}" style="font-size: 14px;">Add Item</a></li>
-                            <li><a href="#" style="font-size: 14px;">About</a></li>
-                            <li><a href="{{ url_for('logout') }}" style="font-size: 14px;">Logout</a></li>
+                            {% if session.get('loggedinAdmin') %}
+                                <!-- Navigasi khusus admin -->
+                                <li><a href="{{ url_for('admin') }}">Home</a></li>
+                                <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                                <li><a href="{{ url_for('add_item') }}">Add Item</a></li>
+                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                            {% elif session.get('loggedin') %}
+                                <!-- Navigasi khusus user -->
+                                <li><a href="{{ url_for('dashboard') }}">Home</a></li>
+                                <li><a href="{{ url_for('add_item') }}">Add Item</a></li>
+                                <li><a href="#">About</a></li>
+                                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                            {% else %}
+                                <!-- Navigasi untuk pengunjung yang belum login -->
+                                <li><a href="{{ url_for('login') }}">Login</a></li>
+                            {% endif %}
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
