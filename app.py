@@ -69,6 +69,12 @@ def register():
         email = request.form['email']
         password = request.form['password']
         username = request.form['username']
+        if len(password) < 8:
+            msg = 'Password must be at least 8 characters long!'
+            return render_template('register.html', msg=msg, success=False)
+        if ' ' in password:
+            msg = 'Password cannot contain spaces!'
+            return render_template('register.html', msg=msg, success=False)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM user_login WHERE email = %s', (email,))
         account = cursor.fetchone()

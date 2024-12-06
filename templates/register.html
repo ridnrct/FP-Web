@@ -26,7 +26,11 @@
                         Sign Up
                     </span>
                 </div>
-
+                {% if msg %}
+                <div class="alert alert-info" style="margin: 10px; font-family: 'Poppins', sans-serif; text-align: center;">
+                    {{ msg }}
+                </div>
+                {% endif %}
                 <form class="login100-form validate-form form-register" action="{{ url_for('register') }}" method="post">
 
                     <!-- Input Username -->
@@ -35,22 +39,21 @@
                         <input id="username" class="input100" type="text" name="username" placeholder="Enter Username" style="font-family: 'Poppins', sans-serif;">
                         <span class="focus-input100"></span>
                     </div>
-
                     <!-- Input Email -->
                     <div class="wrap-input100 validate-input m-b-26 login" data-validate="Email is required">
                         <span class="label-input100" style="font-family: 'Poppins', sans-serif;">Email</span>
                         <input id="email" class="input100 email" type="text" name="email" placeholder="Enter Email" style="font-family: 'Poppins', sans-serif;">
                         <span class="focus-input100"></span>
                     </div>
-
                     <!-- Input Password -->
                     <div class="wrap-input100 validate-input m-b-18 login" data-validate="Password is required">
                         <span class="label-input100" style="font-family: 'Poppins', sans-serif;">Password</span>
-                        <input id="password" class="input100 password" type="password" name="password" placeholder="Enter Password" style="font-family: 'Poppins', sans-serif;">
+                        <input id="password" class="input100 password" type="password" name="password" 
+                            placeholder="Enter Password" style="font-family: 'Poppins', sans-serif;" 
+                            minlength="8" pattern="^\S+$" required>
                         <span class="focus-input100"></span>
                     </div>
-
-                    <!-- Tombol dan Link -->
+                    <!-- Submit -->
                     <div class="container-login100-form-btn flex-sb-m w-full p-b-30">
                         <input class="login100-form-btn" type="submit" value="Register" style="font-family: 'Poppins', sans-serif; font-weight: 700;">
                         <div>
