@@ -1,7 +1,8 @@
-from flask import Flask, flash, render_template, request, redirect, url_for, session, send_from_directory
+from flask import Flask, flash, render_template, request, redirect, url_for, session, send_from_directory, current_app
 from werkzeug.utils import secure_filename
 from flask_mysqldb import MySQL
 import os
+import MySQLdb
 import MySQLdb.cursors
 import re
 import schedule
@@ -14,7 +15,7 @@ from itsdangerous import URLSafeTimedSerializer
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime, timedelta
 import atexit
-# atexit.register(lambda: scheduler.shutdown())
+atexit.register(lambda: scheduler.shutdown())
 
 UPLOAD_FOLDER = 'uploads'
 
@@ -349,37 +350,38 @@ def accept_item(item_id):
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
 
-# # Fungsi untuk memindahkan item yang diterima ke tabel riwayat
-# def move_accepted_items():
-#     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-#     # Cari item yang diterima lebih dari 1 menit yang lalu
-#     one_minute_ago = datetime.now() - timedelta(minutes=1)
-#     cursor.execute('SELECT * FROM tbl_item WHERE status = %s AND timestamp_column <= %s', 
-#                    ('accepted', one_minute_ago))
-#     accepted_items = cursor.fetchall()
-    
-#     # Pindahkan ke tabel riwayat
-#     for item in accepted_items:
-#         cursor.execute('''
-#             INSERT INTO tbl_item_history (item_id, title, description, img, email, status) 
-#             VALUES (%s, %s, %s, %s, %s, %s)
-#         ''', (
-#             item['id'], 
-#             item['title'], 
-#             item['description'], 
-#             item['img'], 
-#             item['email'], 
-#             'accepted'
-#         ))
-#         # Hapus dari tabel utama
-#         cursor.execute('DELETE FROM tbl_item WHERE id = %s', (item['id'],))
-#     mysql.connection.commit()
-#     cursor.close()
+def move_accepted_items():
+    # Buat koneksi manual tanpa mengandalkan mysql.connection Flask
+    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='web_barang_hilang')
+    cursor = conn.cursor(MySQLdb.cursors.DictCursor)
 
-# # Jadwalkan tugas setiap 30 detik
-# scheduler = BackgroundScheduler()
-# scheduler.add_job(move_accepted_items, 'interval', seconds=30)
-# scheduler.start()
+    one_minute_ago = datetime.now() - timedelta(minutes=1)
+    cursor.execute('SELECT * FROM tbl_item_user WHERE status = %s AND timestamp_column <= %s', 
+                   ('accepted', one_minute_ago))
+    accepted_items = cursor.fetchall()
+
+    for item in accepted_items:
+        cursor.execute('''
+            INSERT INTO tbl_item_history (item_id, title, description, img, email, status) 
+            VALUES (%s, %s, %s, %s, %s, %s)
+        ''', (
+            item['item_id'], 
+            item['title'], 
+            item['description'], 
+            item['img'], 
+            item['email'], 
+            'accepted'
+        ))
+        cursor.execute('DELETE FROM tbl_item_user WHERE item_id = %s', (item['item_id'],))
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+# Jadwalkan tugas setiap 30 detik
+scheduler = BackgroundScheduler()
+scheduler.add_job(move_accepted_items, 'interval', seconds=10)
+scheduler.start()
 
 if __name__ == "__main__":
     app.run(debug=True)
