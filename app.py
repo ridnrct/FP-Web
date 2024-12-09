@@ -4,7 +4,6 @@ from flask_mysqldb import MySQL
 import os
 import MySQLdb.cursors
 import re
-from datetime import datetime, timedelta
 import schedule
 import time
 import smtplib
@@ -12,6 +11,11 @@ from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from flask_mail import Mail, Message
 from itsdangerous import URLSafeTimedSerializer
+from apscheduler.schedulers.background import BackgroundScheduler
+from datetime import datetime, timedelta
+import atexit
+# atexit.register(lambda: scheduler.shutdown())
+
 UPLOAD_FOLDER = 'uploads'
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -23,7 +27,7 @@ app.secret_key = 'secret key'
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'barang_hilang'
+app.config['MYSQL_DB'] = 'web_barang_hilang'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 mysql = MySQL(app)
@@ -206,36 +210,46 @@ def additem():
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Route add item add data
 @app.route('/add_item', methods=['GET', 'POST'])
 def add_item():
     if 'loggedin' or 'loggedinAdmin' in session:
         if request.method == 'POST':
             title = request.form['title']
             description = request.form['description']
+            
+            # Tentukan email berdasarkan sesi
             if 'loggedin' in session:
                 email = session['email']
             elif 'loggedinAdmin' in session:
                 email = session['emailAdmin']  
+            
             if 'file' in request.files:
                 file = request.files['file']
                 if file and allowed_file(file.filename):
                     filename = secure_filename(file.filename)
                     file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    
                     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                    
+                    # Masukkan data ke tbl_item
                     cursor.execute(
                         'INSERT INTO tbl_item (title, description, img, email) VALUES (%s, %s, %s, %s)',
                         (title, description, filename, email)
                     )
                     mysql.connection.commit()
+                    
+                    # Dapatkan item_id yang baru saja ditambahkan
+                    cursor.execute('SELECT LAST_INSERT_ID() AS item_id')
+                    new_item = cursor.fetchone()
+                    new_item_id = new_item['item_id']  # Ini adalah item_id yang baru ditambahkan
+                    
                     cursor.close()
                     notify_admin()
                     flash('Pengajuan item berhasil! Menunggu persetujuan admin.', 'success')
             return redirect(url_for('dashboard'))
-        print("Redirecting to additem")
         return redirect(url_for('additem'))
-    print("Redirecting to login")
     return redirect(url_for('login'))
+
 
 def notify_admin():
     sender_email = "ridhanurrachmat240802@gmail.com"  
@@ -268,63 +282,104 @@ def notify_admin():
     
     cursor.close()
 
-# Route Reject
 @app.route('/reject_item/<int:item_id>', methods=['POST'])
 def reject_item(item_id):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM tbl_item WHERE id = %s', (item_id,))
+
+    # Ambil data item yang ditolak
+    cursor.execute('SELECT * FROM tbl_item WHERE item_id = %s', (item_id,))
     rejected_item = cursor.fetchone()
-    cursor.execute('DELETE FROM tbl_item WHERE id = %s', (item_id,))
-    mysql.connection.commit()
+
+    if rejected_item:
+        # Salin data item ke dalam tabel riwayat dengan status 'rejected'
+        cursor.execute('''
+            INSERT INTO tbl_item_history (item_id, title, description, img, email, status, action_time)
+            VALUES (%s, %s, %s, %s, %s, %s, NOW())
+        ''', (
+            rejected_item['item_id'],
+            rejected_item['title'],
+            rejected_item['description'],
+            rejected_item['img'],
+            rejected_item['email'],
+            'rejected'
+        ))
+
+        # Hapus data di tabel utama
+        cursor.execute('DELETE FROM tbl_item WHERE item_id = %s', (item_id,))
+        
+        # Commit perubahan
+        mysql.connection.commit()
+    else:
+        return "Item not found", 404  # Tambahkan respons jika item tidak ditemukan
+
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
 
-# Route Edit
+
+
 @app.route('/edit_item', methods=['POST'])
 def edit_item():
     if request.method == 'POST':
         new_title = request.form['editTitle']
         new_description = request.form['editDescription']
-        item_id = request.form['editItemId']
+        item_id = request.form['editItemId']  # Pastikan item_id dikirim dari form
+        
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('UPDATE tbl_item SET title=%s, description=%s WHERE id=%s', (new_title, new_description, item_id))
+        
+        # Update data berdasarkan item_id
+        cursor.execute('UPDATE tbl_item SET title=%s, description=%s WHERE item_id=%s', 
+                       (new_title, new_description, item_id))
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('admin_dashboard', reload=True))
+
 
 
 # Route Accept
 @app.route('/accept_item/<int:item_id>', methods=['POST'])
 def accept_item(item_id):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM tbl_item WHERE id = %s', (item_id,))
+    cursor.execute('SELECT * FROM tbl_item WHERE item_id = %s', (item_id,))
     accepted_item = cursor.fetchone()
     timestamp_column = datetime.now()
-    cursor.execute('INSERT INTO tbl_item_user (id, title, description, img, email, status, timestamp_column) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-                   (accepted_item['id'], accepted_item['title'], accepted_item['description'], accepted_item['img'], accepted_item['email'], 'accepted', timestamp_column))
-    cursor.execute('DELETE FROM tbl_item WHERE id = %s', (item_id,))
+    cursor.execute('INSERT INTO tbl_item_user (item_id, title, description, img, email, status, timestamp_column) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                   (accepted_item['item_id'], accepted_item['title'], accepted_item['description'], accepted_item['img'], accepted_item['email'], 'accepted', timestamp_column))
+    cursor.execute('DELETE FROM tbl_item WHERE item_id = %s', (item_id,))
     mysql.connection.commit()
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
 
-def delete_accepted_data():
-    with app.app_context():
-        try:
-            cursor = mysql.connection.cursor()
-            delete_query = "DELETE FROM tbl_item_user WHERE status = 'accepted' AND timestamp_column < %s"
-            threshold_time = datetime.now() - timedelta(minutes=1)
-            cursor.execute(delete_query, (threshold_time,))
-            mysql.connection.commit()
-            print(f"Old accepted data deleted at {datetime.now()}")
-        except Exception as e:
-            print(f"Error deleting old accepted data: {e}")
-        finally:
-            cursor.close()
+# # Fungsi untuk memindahkan item yang diterima ke tabel riwayat
+# def move_accepted_items():
+#     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+#     # Cari item yang diterima lebih dari 1 menit yang lalu
+#     one_minute_ago = datetime.now() - timedelta(minutes=1)
+#     cursor.execute('SELECT * FROM tbl_item WHERE status = %s AND timestamp_column <= %s', 
+#                    ('accepted', one_minute_ago))
+#     accepted_items = cursor.fetchall()
+    
+#     # Pindahkan ke tabel riwayat
+#     for item in accepted_items:
+#         cursor.execute('''
+#             INSERT INTO tbl_item_history (item_id, title, description, img, email, status) 
+#             VALUES (%s, %s, %s, %s, %s, %s)
+#         ''', (
+#             item['id'], 
+#             item['title'], 
+#             item['description'], 
+#             item['img'], 
+#             item['email'], 
+#             'accepted'
+#         ))
+#         # Hapus dari tabel utama
+#         cursor.execute('DELETE FROM tbl_item WHERE id = %s', (item['id'],))
+#     mysql.connection.commit()
+#     cursor.close()
 
-schedule.every(1).minutes.do(delete_accepted_data)
+# # Jadwalkan tugas setiap 30 detik
+# scheduler = BackgroundScheduler()
+# scheduler.add_job(move_accepted_items, 'interval', seconds=30)
+# scheduler.start()
 
 if __name__ == "__main__":
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-        app.run(debug=True)
+    app.run(debug=True)

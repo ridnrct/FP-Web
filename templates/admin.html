@@ -32,16 +32,22 @@
             {% for item in data %}
             <div class="list-item">
                 <div class="item">
-                    <div class="img-item"><img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image"></div>
+                    <div class="img-item">
+                        <img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image">
+                    </div>
                     <div class="detail">
                         <p class="deskirpsi">{{ item.description }}</p>
                         <div class="request">
-                            <p>{{ item.email }}</p><p></p>
-                            <form action="{{ url_for('reject_item', item_id=item.id) }}" method="post">
+                            <p>{{ item.email }}</p>
+                            <form action="{{ url_for('reject_item', item_id=item.item_id) }}" method="post">
                                 <button type="submit" class="btn reject">REJECT</button>
                             </form>
-                            <button type="button" class="btn edit edit-btn" data-id="{{ item.id }}" data-title="{{ item.title }}" data-description="{{ item.description }}" data-img-url="{{ url_for('uploaded_file', filename=item.img) }}">EDIT</button>
-                            <form action="{{ url_for('accept_item', item_id=item.id) }}" method="post">
+                            <button type="button" class="btn edit edit-btn" 
+                                data-id="{{ item.item_id }}" 
+                                data-title="{{ item.title }}" 
+                                data-description="{{ item.description }}" 
+                                data-img-url="{{ url_for('uploaded_file', filename=item.img) }}">EDIT</button>
+                            <form action="{{ url_for('accept_item', item_id=item.item_id) }}" method="post">
                                 <button type="submit" class="btn accept">ACCEPT</button>
                             </form>
                         </div>
@@ -50,53 +56,51 @@
             </div>
             {% endfor %}
         </div>
-    </div>
-
-    <!-- Modal Edit -->
-    <div id="contentModal" class="modal1">
-        <div class="modal1-content">
-            <div class="titleModalDetail">
-                <p>EDIT ITEM</p>
-            </div>
-            <div class="contentModalDetail">
-                <form action="{{ url_for('edit_item') }}" method="post"  id="editForm">
-                    <input type="hidden" id="editItemId" name="editItemId">
-                    <div class="titleItemModal">
-                        <input type="text" class="form-control" id="editTitle" name="editTitle" required>
-                    </div>
-                    <div class="descriptionItem">
-                        <textarea class="form-control" id="editDescription" name="editDescription" rows="3" required style="height: 180px;"></textarea>
-                    </div>
-                    <button type="submit" class="edit-mdl edit-modal" id="editButton">EDIT</button>
-                </form>
+        
+        <!-- Modal Edit -->
+        <div id="contentModal" class="modal1">
+            <div class="modal1-content">
+                <div class="titleModalDetail">
+                    <p>EDIT ITEM</p>
+                </div>
+                <div class="contentModalDetail">
+                    <form action="{{ url_for('edit_item') }}" method="post" id="editForm">
+                        <input type="hidden" name="editItemId" id="editItemId" value="">
+                        <div class="titleItemModal">
+                            <input type="text" class="form-control" id="editTitle" name="editTitle" value="" required>
+                        </div>
+                        <div class="descriptionItem">
+                            <textarea class="form-control" id="editDescription" name="editDescription" rows="3" required style="height: 180px;"></textarea>
+                        </div>
+                        <button type="submit" class="edit-mdl edit-modal" id="editButton">EDIT</button>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
-    <script>
-        var editModal = document.getElementById('contentModal');
-        // var editForm = document.getElementById('editForm');
-        var editButtons = document.getElementsByClassName('edit-btn');
-        // var initialFormAction = "{{ url_for('edit_item', item_id='') }}";
-
-        for (var i = 0; i < editButtons.length; i++) {
-            editButtons[i].addEventListener('click', function () {
-                editModal.style.display = 'block';
-                var title = this.getAttribute('data-title');
-                var description = this.getAttribute('data-description');
-                var item_id = this.getAttribute('data-id');
-                // editForm.action = initialFormAction.replace('placeholder', item_id);
-                document.querySelector('#editTitle').value = title;
-                document.querySelector('#editDescription').value = description;
-                document.querySelector('#editItemId').value = item_id;
+        
+        <script>
+            var editModal = document.getElementById('contentModal');
+            var editButtons = document.getElementsByClassName('edit-btn');
+        
+            for (var i = 0; i < editButtons.length; i++) {
+                editButtons[i].addEventListener('click', function () {
+                    editModal.style.display = 'block';
+                    var title = this.getAttribute('data-title');
+                    var description = this.getAttribute('data-description');
+                    var item_id = this.getAttribute('data-id');
+                    document.querySelector('#editTitle').value = title;
+                    document.querySelector('#editDescription').value = description;
+                    document.querySelector('#editItemId').value = item_id;
                 });
-        }
-        window.onclick = function (event) {
-            if (event.target === editModal) {
-                editModal.style.display = 'none';
+            }
+        
+            window.onclick = function (event) {
+                if (event.target === editModal) {
+                    editModal.style.display = 'none';
                 }
-        };
-    </script>
-
+            };
+        </script>
+        
     {% endblock %}
 </body>
 </html>
