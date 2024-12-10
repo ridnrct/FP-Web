@@ -9,98 +9,137 @@
     <link rel="stylesheet" href="/static/admin.css">
     <link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
     <title>Temuan Barang Hilang</title>
+    <style>
+        .item-container {
+            /* background-color: rgba(147, 112, 219); */
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            padding: 15px;
+            box-shadow: 0 0 10px 0px rgba(75, 48, 0, 0.8);
+        }
+
+        .image-section img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .content-section {
+            margin-top: 0px;
+            display: flex;
+            flex-direction: column; /* Konten diatur secara vertikal */
+            justify-content: flex-start; /* Rata atas untuk konten internal */
+            gap:2px; /* Memberikan jarak antar elemen di dalam */
+        }
+
+        .content-section h5 {
+            font-weight: bold;
+            margin-bottom: 5px;
+            height: 35px;
+            text-decoration: underline;
+            /* box-shadow: 1px -1px 5px 0px rgba(75, 48, 0, 0.8) inset;
+            -webkit-box-shadow: 2px -2px 5px 0px rgba(75, 48, 0, 0.8) inset;
+            -moz-box-shadow: 5px -5px 10px 0px rgba(75, 48, 0, 0.8) inset;  */
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-top: 3px;
+        }
+        .content-section textarea{
+            margin-bottom: 5px;
+            /* box-shadow: 1px -1px 5px 0px rgba(75, 48, 0, 0.8) inset;
+            -webkit-box-shadow: 2px -2px 5px 0px rgba(75, 48, 0, 0.8) inset;
+            -moz-box-shadow: 5px -5px 10px 0px rgba(75, 48, 0, 0.8) inset; */
+            border-radius: 5px;
+            padding-left: 10px;
+            padding-top: 3px;
+        }
+
+        .item-actions button {
+            width: 100px;
+            
+        }
+        @media (min-width: 768px) {
+            .item-row {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .image-section {
+                flex: 1;
+            }
+
+            .content-section {
+                flex: 2;
+            }
+        }
+    </style>
 </head>
 <body>
     {% extends "nav.html" %}
     {% block title %}{% endblock %}
     {% block content %}
-    <!-- Welcome -->
-    <div class="content">
-        <div class="intro">
-            <div class="welcome">
-                <p>Admin, {{ session['usernameAdmin'] }}</p>
-                <p>Admin Aplikasi Website Penemuan Barang Hilang</p>
-            </div>
-            <div class="introimg">
-                <div class="imgambar"></div>
+    
+    <!-- Welcome Area -->
+    <div class="welcome-area" id="welcome">
+        <div class="header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                        <h1>Admin,<br><strong>{{ session['usernameAdmin'] }}</strong></h1>
+                    </div>
+                </div>
             </div>
         </div>
+        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1" d="M0,288L48,266.7C96,245,192,203,288,192C384,181,480,203,576,224C672,245,768,267,864,272C960,277,1056,267,1152,250.7C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
     </div>
-    <div class="page-item">
-        <div class="bg-container-item"></div>
-        <div class="container-item">
+
+    <!-- Content Area -->
+    <section class="section home-feature">
+        <div class="container mt-4">
             {% for item in data %}
-            <div class="list-item">
-                <div class="item">
-                    <div class="img-item">
-                        <img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image">
+            <div class="item-container">
+                <div class="row align-items-center">
+                    <!-- Image Section -->
+                    <div class="col-md-4">
+                        <div class="image-section">
+                            <img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }}">
+                        </div>
                     </div>
-                    <div class="detail">
-                        <p class="deskirpsi">{{ item.description }}</p>
-                        <div class="request">
-                            <p>{{ item.email }}</p>
-                            <form action="{{ url_for('reject_item', item_id=item.item_id) }}" method="post">
-                                <button type="submit" class="btn reject">REJECT</button>
-                            </form>
-                            <button type="button" class="btn edit edit-btn" 
-                                data-id="{{ item.item_id }}" 
-                                data-title="{{ item.title }}" 
-                                data-description="{{ item.description }}" 
-                                data-img-url="{{ url_for('uploaded_file', filename=item.img) }}">EDIT</button>
-                            <form action="{{ url_for('accept_item', item_id=item.item_id) }}" method="post">
-                                <button type="submit" class="btn accept">ACCEPT</button>
-                            </form>
+            
+                    <!-- Content Section -->
+                    <div class="col-md-8">
+                        <div class="content-section">
+                            <h5>{{ item.title }}</h5>
+                            <textarea style="height: 80px;">{{ item.description }}</textarea>
+                            <textarea class="item-email" style="font-weight: bold; height: 30px;">Email : {{ item.email }}</textarea>
+                            <div class="d-flex justify-content-end gap-2 item-actions">
+                                <form action="{{ url_for('reject_item', item_id=item.item_id) }}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                                <form action="{{ url_for('accept_item', item_id=item.item_id) }}" method="post">
+                                    <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
             {% endfor %}
         </div>
-        
-        <!-- Modal Edit -->
-        <div id="contentModal" class="modal1">
-            <div class="modal1-content">
-                <div class="titleModalDetail">
-                    <p>EDIT ITEM</p>
+    </section>
+    <footer>
+        <div class="container">
+                <div class="col-lg-12">
+                    <p class="copyright">Copyright &copy; 2024 Barang Hilang Website - Design: TeamCC</p>
                 </div>
-                <div class="contentModalDetail">
-                    <form action="{{ url_for('edit_item') }}" method="post" id="editForm">
-                        <input type="hidden" name="editItemId" id="editItemId" value="">
-                        <div class="titleItemModal">
-                            <input type="text" class="form-control" id="editTitle" name="editTitle" value="" required>
-                        </div>
-                        <div class="descriptionItem">
-                            <textarea class="form-control" id="editDescription" name="editDescription" rows="3" required style="height: 180px;"></textarea>
-                        </div>
-                        <button type="submit" class="edit-mdl edit-modal" id="editButton">EDIT</button>
-                    </form>
-                </div>
-            </div>
         </div>
-        
-        <script>
-            var editModal = document.getElementById('contentModal');
-            var editButtons = document.getElementsByClassName('edit-btn');
-        
-            for (var i = 0; i < editButtons.length; i++) {
-                editButtons[i].addEventListener('click', function () {
-                    editModal.style.display = 'block';
-                    var title = this.getAttribute('data-title');
-                    var description = this.getAttribute('data-description');
-                    var item_id = this.getAttribute('data-id');
-                    document.querySelector('#editTitle').value = title;
-                    document.querySelector('#editDescription').value = description;
-                    document.querySelector('#editItemId').value = item_id;
-                });
-            }
-        
-            window.onclick = function (event) {
-                if (event.target === editModal) {
-                    editModal.style.display = 'none';
-                }
-            };
-        </script>
-        
+    </footer>
+
     {% endblock %}
 </body>
 </html>

@@ -42,6 +42,7 @@
                                 <!-- Navigasi khusus admin -->
                                 <li><a href="{{ url_for('admin') }}">Home</a></li>
                                 <li><a href="{{ url_for('admin_dashboard') }}">Dashboard</a></li>
+                                <li><a href="{{ url_for('riwayat') }}">Riwayat</a></li>
                                 <li><a href="{{ url_for('add_item') }}">Add Item</a></li>
                                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             {% elif session.get('loggedin') %}

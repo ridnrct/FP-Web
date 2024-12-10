@@ -719,17 +719,10 @@ welcome
 
 
 @media (max-width: 768px) {
-  .welcome-area {
-    margin-bottom: 0px;
-    height: auto;
-  }
   .welcome-area .header-text {
     top: 45% !important;
     transform: perspective(1px) translateY(-45%) !important;
     text-align: center;
-  }
-  .welcome-area .header-text .buttons {
-    display: none;
   }
   .welcome-area .header-text h1 {
     font-weight: 600;
@@ -748,17 +741,6 @@ welcome
     line-height: 22px;
     margin-bottom: 40px;
   }
-}
-@media(max-width:500px){
-  .welcome-area .header-text {
-    display: none;
-  }
-  .add-item{
-    margin-top: 130px !important;
-  }
-}
-.add-item{
-  margin-top: 300px;
 }
 
 

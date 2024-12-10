@@ -190,6 +190,16 @@ def dashboard():
         return render_template('dashboard.html', data=data)
     return redirect(url_for('login'))
 
+# Route riwayat show data
+@app.route('/riwayat')
+def riwayat():
+    if 'loggedinAdmin' in session:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM tbl_item_history')
+        data = cursor.fetchall()
+        return render_template('riwayat_item.html', data=data)
+    return redirect(url_for('login'))
+
 #Delete item as Admin
 @app.route('/delete_item', methods=['POST'])
 def delete_item():
@@ -246,7 +256,7 @@ def add_item():
                     
                     cursor.close()
                     notify_admin()
-                    flash('Pengajuan item berhasil! Menunggu persetujuan admin.', 'success')
+                    flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
             return redirect(url_for('dashboard'))
         return redirect(url_for('additem'))
     return redirect(url_for('login'))
@@ -316,26 +326,6 @@ def reject_item(item_id):
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
 
-
-
-@app.route('/edit_item', methods=['POST'])
-def edit_item():
-    if request.method == 'POST':
-        new_title = request.form['editTitle']
-        new_description = request.form['editDescription']
-        item_id = request.form['editItemId']  # Pastikan item_id dikirim dari form
-        
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        
-        # Update data berdasarkan item_id
-        cursor.execute('UPDATE tbl_item SET title=%s, description=%s WHERE item_id=%s', 
-                       (new_title, new_description, item_id))
-        mysql.connection.commit()
-        cursor.close()
-        return redirect(url_for('admin_dashboard', reload=True))
-
-
-
 # Route Accept
 @app.route('/accept_item/<int:item_id>', methods=['POST'])
 def accept_item(item_id):
@@ -355,9 +345,10 @@ def move_accepted_items():
     conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='web_barang_hilang')
     cursor = conn.cursor(MySQLdb.cursors.DictCursor)
 
-    one_minute_ago = datetime.now() - timedelta(minutes=1)
-    cursor.execute('SELECT * FROM tbl_item_user WHERE status = %s AND timestamp_column <= %s', 
-                   ('accepted', one_minute_ago))
+    three_days_ago = datetime.now() - timedelta(days=3)
+
+    cursor.execute('DELETE FROM tbl_item_user WHERE status = %s AND timestamp_column <= %s', 
+                ('accepted', three_days_ago))
     accepted_items = cursor.fetchall()
 
     for item in accepted_items:
