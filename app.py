@@ -190,6 +190,13 @@ def dashboard():
         return render_template('dashboard.html', data=data)
     return redirect(url_for('login'))
 
+# Route about
+@app.route('/about')
+def about():
+    if 'loggedin' in session:
+        return render_template('about.html')
+    return redirect(url_for('login'))
+
 # Route riwayat show data
 @app.route('/riwayat')
 def riwayat():

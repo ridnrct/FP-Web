@@ -49,7 +49,7 @@
                                 <!-- Navigasi khusus user -->
                                 <li><a href="{{ url_for('dashboard') }}">Home</a></li>
                                 <li><a href="{{ url_for('add_item') }}">Add Item</a></li>
-                                <li><a href="#">About</a></li>
+                                <li><a href="{{ url_for('about') }}">About</a></li>
                                 <li><a href="{{ url_for('logout') }}">Logout</a></li>
                             {% else %}
                                 <!-- Navigasi untuk pengunjung yang belum login -->

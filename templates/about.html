@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Oleo+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <link rel="shortcut icon" href="/static/img/logo1.png" type="image/x-icon">
+    <title>Barang Hilang</title>
+</head>
+<body>
+    {% extends "nav.html" %}
+    {% block title %}{% endblock %}
+    {% block content %}
+    <div class="welcome-area" id="welcome">
+        <div class="header-text">
+            <div class="container">
+                <div class="row">
+                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
+                        <h1><strong>Tentang Kami</strong></h1>
+                    </div>
+                    <p> Selamat datang di website pelaporan barang hilang, <br>
+                        Sebuah platform yang dirancang untuk mempermudah masyarakat dalam melaporkan dan menemukan barang yang hilang atau ditemukan. <br>
+                        Website ini lahir dari keprihatinan kami terhadap kesulitan yang sering dihadapi masyarakat dalam mencari barang yang hilang. <br>
+                        Kami berupaya menciptakan solusi yang mudah digunakan dan bermanfaat untuk menjembatani antara pihak yang kehilangan barang dengan mereka yang menemukannya.</p>
+                </div>
+            </div>
+        </div>
+        <svg style="position: absolute; bottom: 0; left: 0; width: 100%; height: auto;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+            <path fill="#ffffff" fill-opacity="1" d="M0,288L48,266.7C96,245,192,203,288,192C384,181,480,203,576,224C672,245,768,267,864,272C960,277,1056,267,1152,250.7C1248,235,1344,213,1392,202.7L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+        </svg>
+    </div>
+    <section class="section home-feature">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        {% for item in data %}
+                        <div class="col-lg-4 col-md-6 col-sm-6 col-12" data-scroll-reveal="enter bottom move 50px over 0.6s after {{ loop.index * 0.2 }}s">
+                            <div class="features-small-item">
+                                <div class="image-container" style="position: relative; width: 100%; padding-top: 75%; overflow: hidden; border-radius: 8px;">
+                                    <img src="{{ url_for('uploaded_file', filename=item.img) }}" alt="{{ item.title }} Image" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <h5 class="features-title" style="margin-top: 10px;">{{ item.title }}</h5>
+                                <p class="description">{{ item.description }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <style>
+    .description {
+        font-size: 14px;
+        margin-top: -10px;
+        line-height: 1.5; 
+        word-wrap: break-word; 
+        white-space: normal; 
+        overflow: hidden; 
+    }
+    </style>
+    
+    
+    <footer>
+        <div class="container">
+                <div class="col-lg-12">
+                    <p class="copyright">Copyright &copy; 2024 Barang Hilang Website - Design: TeamCC</p>
+                </div>
+        </div>
+    </footer>
+
+    {% endblock %}
+</body>
+</html>
