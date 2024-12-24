@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 12, 2024 at 08:57 PM
+-- Generation Time: Dec 24, 2024 at 10:56 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,12 +78,8 @@ CREATE TABLE `tbl_item_history` (
 --
 
 INSERT INTO `tbl_item_history` (`history_id`, `item_id`, `title`, `description`, `img`, `email`, `status`, `action_time`) VALUES
-(1, 3, 'wkwk', 'askdamlskd', 'cat-game-of-thrones-jon-snow-artwork-wallpaper-preview.jpg', 'ridhanurrachmat240802@gmail.com', 'rejected', '2024-12-09 14:51:26'),
-(2, 1, 'asd', 'asdasd', '2791085.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-09 15:03:12'),
-(3, 2, 'ntah lagi', 'asd', '2791085.jpg', 'ridhanurrachmat240802@gmail.com', 'accepted', '2024-12-09 15:03:12'),
-(4, 4, '123', 'asdasd', '2791085.jpg', 'ridhanurrachmat240802@gmail.com', 'accepted', '2024-12-09 15:06:42'),
-(5, 5, 'asd', 'asdasdasd', '2791085.jpg', 'ridhanurrachmat240802@gmail.com', 'accepted', '2024-12-10 15:07:42'),
-(6, 6, 'zxc', 'zxczxc', 'cat-game-of-thrones-jon-snow-artwork-wallpaper-preview.jpg', 'ridhanurrachmat240802@gmail.com', 'accepted', '2024-12-10 16:17:12');
+(7, 13, 'Sepatu', 'Sepatu merk aerostreet dengan warna abu dan coklat sesuai pada gambar, ditemukan di masjid depan amikom. cp : 081347136434', 'sepatu.jpg', 'ridhanurrachmat240802@gmail.com', 'rejected', '2024-12-24 09:06:19'),
+(8, 14, 'Sepatu ', 'Sepatu merk aerostreet dengan warna abu dan coklat sesuai pada gambar foto, ditemukan di depan universitas amikom. cp : 081231248348', 'sepatu.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'rejected', '2024-12-24 09:15:37');
 
 -- --------------------------------------------------------
 
@@ -107,11 +103,8 @@ CREATE TABLE `tbl_item_user` (
 --
 
 INSERT INTO `tbl_item_user` (`id`, `item_id`, `title`, `description`, `img`, `email`, `status`, `timestamp_column`) VALUES
-(6, 7, 'asd', 'asdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdasasdasdasdas', '2791085.jpg', 'ridhanurrachmat240802@gmail.com', 'accepted', '2024-12-11 14:14:16'),
-(7, 8, 'tes', 'asdasdasdas', '2791085.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-11 14:14:19'),
-(8, 9, 'asdasdasd', 'zxczxczx', 'cat-game-of-thrones-jon-snow-artwork-wallpaper-preview.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-11 14:14:23'),
-(9, 10, 'asdadasdasdasd', 'zckjefjshkjdghsdjkgh', '2791085.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-11 14:14:25'),
-(10, 11, 'asdasd', 'kzmckzmcxkzmckzmckzxczxczc', 'cat-game-of-thrones-jon-snow-artwork-wallpaper-preview.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-11 14:14:28');
+(11, 12, 'Kunci Pintu', 'Deskripsi seperti pada gambar, ditemukan di smoking area depan gedung 4. cp : 08123123123', 'Key_ring.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-24 09:09:03'),
+(12, 15, 'Sepatu', 'Sepatu merk aerostreet dengan warna abu dan coklat sesuai pada foto, ditemukan di masjid depan amikom. cp : 0812317246232', 'sepatu.jpg', 'ridhanurrachmat@students.amikom.ac.id', 'accepted', '2024-12-24 09:19:30');
 
 -- --------------------------------------------------------
 
@@ -131,7 +124,7 @@ CREATE TABLE `user_login` (
 --
 
 INSERT INTO `user_login` (`email`, `password`, `username`, `is_verified`) VALUES
-('ridhanurrachmat@students.amikom.ac.id', 'qwerty121', 'rid', 1);
+('ridhanurrachmat@students.amikom.ac.id', 'qwerty123', 'ridha', 1);
 
 --
 -- Indexes for dumped tables
@@ -175,19 +168,19 @@ ALTER TABLE `user_login`
 -- AUTO_INCREMENT for table `tbl_item`
 --
 ALTER TABLE `tbl_item`
-  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `tbl_item_history`
 --
 ALTER TABLE `tbl_item_history`
-  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `history_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_item_user`
 --
 ALTER TABLE `tbl_item_user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -86,8 +86,8 @@
         <div class="header-text">
             <div class="container">
                 <div class="row">
-                    <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
-                        <h1>Admin,<strong>{{ session['usernameAdmin'] }}</strong></h1>
+                    <div class="offset-xl-0 col-xl-12 offset-lg-0 col-lg-8 col-md-12 col-sm-12">
+                        <h1>Admin,<strong> {{ session['usernameAdmin'] }}</strong></h1>
                         <p>Selamat datang di halaman Dashboard Admin, pusat pengelolaan dan pengawasan sistem pelaporan barang hilang. <br>
                             Halaman ini dirancang khusus untuk memudahkan administrator dalam mengelola permintaan yang diajukan oleh pengguna, <br>
                             memastikan setiap laporan diverifikasi dengan baik sebelum ditindaklanjuti.</p>
@@ -117,8 +117,8 @@
                     <div class="col-md-8">
                         <div class="content-section">
                             <h5>{{ item.title }}</h5>
-                            <textarea style="height: 80px;">{{ item.description }}</textarea>
-                            <textarea class="item-email" style="font-weight: bold; height: 30px;">Email : {{ item.email }}</textarea>
+                            <textarea style="height: 80px; resize: none;" readonly>{{ item.description }}</textarea>
+                            <textarea class="item-email" style="font-weight: bold; height: 30px; resize: none;" readonly>Email : {{ item.email }}</textarea>
                             <div class="d-flex justify-content-end gap-2 item-actions">
                                 <form action="{{ url_for('reject_item', item_id=item.item_id) }}" method="post">
                                     <button type="submit" class="btn btn-danger btn-sm">Reject</button>

@@ -23,7 +23,7 @@
             <div class="container">
                 <div class="row">
                     <div class="offset-xl-3 col-xl-6 offset-lg-2 col-lg-8 col-md-12 col-sm-12">
-                        <h1><strong>Welcome, {{ session['usernameAdmin'] }}</strong><br>Riwayat Item</h1>
+                        <h1><strong>Riwayat Item</strong></h1>
                     </div>
                 </div>
             </div>
@@ -45,6 +45,7 @@
                                 </div>
                                 <h5 class="features-title" style="margin-top: 10px;">{{ item.title }}</h5>
                                 <p class="description">{{ item.description }}</p>
+                                <p style="text-align: center; font-size: 14px; margin-top: 5px; color: gray;">{{ item.email }}</p>
                             </div>
                         </div>
                         {% endfor %}

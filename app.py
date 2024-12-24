@@ -33,7 +33,6 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 mysql = MySQL(app)
 
-# Konfigurasi Flask-Mail
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -327,28 +326,61 @@ def reject_item(item_id):
         
         # Commit perubahan
         mysql.connection.commit()
+
+        # Kirimkan email pemberitahuan
+        subject = "Item Anda Ditolak"
+        body = f"Hallo,\n\nItem Anda dengan judul \"{rejected_item['title']}\" telah ditolak. Jika Anda memiliki pertanyaan, silakan hubungi admin.\n\nTerima kasih."
+        send_email(rejected_item['email'], subject, body)
     else:
         return "Item not found", 404  # Tambahkan respons jika item tidak ditemukan
 
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
 
-# Route Accept
+
 @app.route('/accept_item/<int:item_id>', methods=['POST'])
 def accept_item(item_id):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM tbl_item WHERE item_id = %s', (item_id,))
     accepted_item = cursor.fetchone()
-    timestamp_column = datetime.now()
-    cursor.execute('INSERT INTO tbl_item_user (item_id, title, description, img, email, status, timestamp_column) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-                   (accepted_item['item_id'], accepted_item['title'], accepted_item['description'], accepted_item['img'], accepted_item['email'], 'accepted', timestamp_column))
-    cursor.execute('DELETE FROM tbl_item WHERE item_id = %s', (item_id,))
-    mysql.connection.commit()
+
+    if accepted_item:
+        timestamp_column = datetime.now()
+        cursor.execute('INSERT INTO tbl_item_user (item_id, title, description, img, email, status, timestamp_column) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+                       (accepted_item['item_id'], accepted_item['title'], accepted_item['description'], accepted_item['img'], accepted_item['email'], 'accepted', timestamp_column))
+        cursor.execute('DELETE FROM tbl_item WHERE item_id = %s', (item_id,))
+        mysql.connection.commit()
+
+        # Kirimkan email pemberitahuan
+        subject = "Item Anda Diterima"
+        body = f"Hallo,\n\nItem Anda dengan judul \"{accepted_item['title']}\" telah diterima dan ditampilkan di dashboard.\n\nTerima kasih."
+        send_email(accepted_item['email'], subject, body)
+    else:
+        return "Item not found", 404  # Tambahkan respons jika item tidak ditemukan
+
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
 
+def send_email(to_email, subject, body):
+    sender_email = app.config['MAIL_USERNAME']
+    sender_password = app.config['MAIL_PASSWORD']
+
+    message = MIMEMultipart()
+    message['From'] = sender_email
+    message['To'] = to_email
+    message['Subject'] = subject
+    message.attach(MIMEText(body, 'plain'))
+
+    try:
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, to_email, message.as_string())
+        print(f"Email berhasil dikirim ke {to_email}")
+    except Exception as e:
+        print(f"Gagal mengirim email ke {to_email}: {e}")
+
 def move_accepted_items():
-    # Buat koneksi manual tanpa mengandalkan mysql.connection Flask
     conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='web_barang_hilang')
     cursor = conn.cursor(MySQLdb.cursors.DictCursor)
 
@@ -376,9 +408,8 @@ def move_accepted_items():
     cursor.close()
     conn.close()
 
-# Jadwalkan tugas setiap 30 detik
 scheduler = BackgroundScheduler()
-scheduler.add_job(move_accepted_items, 'interval', seconds=10)
+scheduler.add_job(move_accepted_items, 'interval', seconds=30)
 scheduler.start()
 
 if __name__ == "__main__":
