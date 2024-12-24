@@ -246,8 +246,6 @@ def add_item():
                     email = session.get('emailAdmin', '')
                 print(f"DEBUG: Email: {email}")
 
-                flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
-
                 if 'file' in request.files:
                     file = request.files['file']
                     print(f"DEBUG: File received: {file.filename}")
@@ -282,6 +280,7 @@ def add_item():
 
                             cursor.close()
                             notify_admin()
+                            flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
                         except Exception as e:
                             print(f"ERROR: Database operation failed: {e}")
                             flash(f"Database error: {e}", 'danger')
