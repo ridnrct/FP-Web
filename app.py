@@ -25,11 +25,10 @@ app = Flask(__name__)
 
 app.secret_key = 'secret key'
 
-app.config['MYSQL_HOST'] = 'baranghilang.mysql.database.azure.com'
-app.config['MYSQL_USER'] = 'ccweb'
-app.config['MYSQL_PASSWORD'] = 'Qwerty123'
-app.config['MYSQL_PORT'] = 3306
-app.config['MYSQL_DB'] = 'web_barang_hilang'
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'root'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DB'] = 'db_fp_cc'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 mysql = MySQL(app)
@@ -230,43 +229,73 @@ def allowed_file(filename):
 
 @app.route('/add_item', methods=['GET', 'POST'])
 def add_item():
-    if 'loggedin' or 'loggedinAdmin' in session:
-        if request.method == 'POST':
-            title = request.form['title']
-            description = request.form['description']
-            flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
-            
-            # Tentukan email berdasarkan sesi
-            if 'loggedin' in session:
-                email = session['email']
-            elif 'loggedinAdmin' in session:
-                email = session['emailAdmin']  
-            
-            if 'file' in request.files:
-                file = request.files['file']
-                if file and allowed_file(file.filename):
-                    filename = secure_filename(file.filename)
-                    file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                    
-                    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                    
-                    # Masukkan data ke tbl_item
-                    cursor.execute(
-                        'INSERT INTO tbl_item (title, description, img, email) VALUES (%s, %s, %s, %s)',
-                        (title, description, filename, email)
-                    )
-                    mysql.connection.commit()
-                    
-                    # Dapatkan item_id yang baru saja ditambahkan
-                    cursor.execute('SELECT LAST_INSERT_ID() AS item_id')
-                    new_item = cursor.fetchone()
-                    new_item_id = new_item['item_id']  # Ini adalah item_id yang baru ditambahkan
-                    
-                    cursor.close()
-                    notify_admin()
-            return redirect(url_for('dashboard'))
+    try:
+        if 'loggedin' or 'loggedinAdmin' in session:
+            if request.method == 'POST':
+                # Debugging input data
+                print("DEBUG: POST request received")
+                title = request.form.get('title', '')
+                description = request.form.get('description', '')
+                print(f"DEBUG: Title: {title}, Description: {description}")
+                
+                # Tentukan email berdasarkan sesi
+                if 'loggedin' in session:
+                    email = session.get('email', '')
+                elif 'loggedinAdmin' in session:
+                    email = session.get('emailAdmin', '')
+                print(f"DEBUG: Email: {email}")
+
+                flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
+
+                if 'file' in request.files:
+                    file = request.files['file']
+                    print(f"DEBUG: File received: {file.filename}")
+
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                        try:
+                            file.save(filepath)
+                            print(f"DEBUG: File saved to {filepath}")
+                        except Exception as e:
+                            print(f"ERROR: File save failed: {e}")
+                            flash(f"File upload error: {e}", 'danger')
+                            return redirect(url_for('additem'))
+
+                        try:
+                            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+                            # Masukkan data ke tbl_item
+                            cursor.execute(
+                                'INSERT INTO tbl_item (title, description, img, email) VALUES (%s, %s, %s, %s)',
+                                (title, description, filename, email)
+                            )
+                            mysql.connection.commit()
+                            print("DEBUG: Item inserted into database")
+
+                            # Dapatkan item_id yang baru saja ditambahkan
+                            cursor.execute('SELECT LAST_INSERT_ID() AS item_id')
+                            new_item = cursor.fetchone()
+                            new_item_id = new_item['item_id']  # Ini adalah item_id yang baru ditambahkan
+                            print(f"DEBUG: New item ID: {new_item_id}")
+
+                            cursor.close()
+                            notify_admin()
+                        except Exception as e:
+                            print(f"ERROR: Database operation failed: {e}")
+                            flash(f"Database error: {e}", 'danger')
+                            return redirect(url_for('additem'))
+
+                return redirect(url_for('dashboard'))
+            return redirect(url_for('additem'))
+        else:
+            print("DEBUG: User not logged in")
+            return redirect(url_for('login'))
+    except Exception as e:
+        print(f"ERROR: Unexpected error: {e}")
+        flash(f"An unexpected error occurred: {e}", 'danger')
         return redirect(url_for('additem'))
-    return redirect(url_for('login'))
+
 
 
 def notify_admin():
@@ -310,7 +339,7 @@ def reject_item(item_id):
 
     if rejected_item:
         # Salin data item ke dalam tabel riwayat dengan status 'rejected'
-        cursor.execute('''
+        cursor.execute(''' 
             INSERT INTO tbl_item_history (item_id, title, description, img, email, status, action_time)
             VALUES (%s, %s, %s, %s, %s, %s, NOW())
         ''', (
@@ -342,25 +371,55 @@ def reject_item(item_id):
 @app.route('/accept_item/<int:item_id>', methods=['POST'])
 def accept_item(item_id):
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # Ambil data item yang diterima
     cursor.execute('SELECT * FROM tbl_item WHERE item_id = %s', (item_id,))
     accepted_item = cursor.fetchone()
 
     if accepted_item:
-        timestamp_column = datetime.now()
-        cursor.execute('INSERT INTO tbl_item_user (item_id, title, description, img, email, status, timestamp_column) VALUES (%s, %s, %s, %s, %s, %s, %s)',
-                       (accepted_item['item_id'], accepted_item['title'], accepted_item['description'], accepted_item['img'], accepted_item['email'], 'accepted', timestamp_column))
-        cursor.execute('DELETE FROM tbl_item WHERE item_id = %s', (item_id,))
-        mysql.connection.commit()
+        # Debug: Periksa item yang ditemukan
+        print("Item diterima:", accepted_item)
 
-        # Kirimkan email pemberitahuan
-        subject = "Item Anda Diterima"
-        body = f"Hallo,\n\nItem Anda dengan judul \"{accepted_item['title']}\" telah diterima dan ditampilkan di dashboard.\n\nTerima kasih."
-        send_email(accepted_item['email'], subject, body)
+        timestamp_column = datetime.now()
+
+        try:
+            # Salin data item ke dalam tbl_item_user
+            cursor.execute('''
+                INSERT INTO tbl_item_user (item_id, title, description, img, email, status, timestamp_column)
+                VALUES (%s, %s, %s, %s, %s, %s, %s)
+            ''', (
+                accepted_item['item_id'],
+                accepted_item['title'],
+                accepted_item['description'],
+                accepted_item['img'],
+                accepted_item['email'],
+                'accepted',
+                timestamp_column
+            ))
+
+            # Hapus data item dari tabel tbl_item
+            cursor.execute('DELETE FROM tbl_item WHERE item_id = %s', (item_id,))
+
+            # Commit perubahan
+            mysql.connection.commit()
+
+            # Kirimkan email pemberitahuan
+            subject = "Item Anda Diterima"
+            body = f"Hallo,\n\nItem Anda dengan judul \"{accepted_item['title']}\" telah diterima dan ditampilkan di dashboard.\n\nTerima kasih."
+            send_email(accepted_item['email'], subject, body)
+
+        except Exception as e:
+            # Debug: Jika terjadi error, tampilkan pesan kesalahan
+            print("Error saat menerima item:", e)
+            mysql.connection.rollback()
+
     else:
         return "Item not found", 404  # Tambahkan respons jika item tidak ditemukan
 
     cursor.close()
     return redirect(url_for('admin_dashboard', reload=True))
+
+
 
 def send_email(to_email, subject, body):
     sender_email = app.config['MAIL_USERNAME']
@@ -382,7 +441,7 @@ def send_email(to_email, subject, body):
         print(f"Gagal mengirim email ke {to_email}: {e}")
 
 def move_accepted_items():
-    conn = MySQLdb.connect(host='baranghilang.mysql.database.azure.com', port=3306, user='ccweb', passwd='Qwerty123', db='web_barang_hilang')
+    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='db_fp_cc')
     cursor = conn.cursor(MySQLdb.cursors.DictCursor)
 
     three_days_ago = datetime.now() - timedelta(days=3)
