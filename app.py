@@ -25,10 +25,11 @@ app = Flask(__name__)
 
 app.secret_key = 'secret key'
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'db_fp_cc'
+app.config['MYSQL_HOST'] = 'baranghilang.mysql.database.azure.com'
+app.config['MYSQL_USER'] = 'ccweb'
+app.config['MYSQL_PORT'] = 3306
+app.config['MYSQL_PASSWORD'] = 'Qwerty123'
+app.config['MYSQL_DB'] = 'web_barang_hilang'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER 
 
 mysql = MySQL(app)
@@ -441,7 +442,7 @@ def send_email(to_email, subject, body):
         print(f"Gagal mengirim email ke {to_email}: {e}")
 
 def move_accepted_items():
-    conn = MySQLdb.connect(host='localhost', user='root', passwd='', db='db_fp_cc')
+    conn = MySQLdb.connect(host='baranghilang.mysql.database.azure.com', user='ccweb', passwd='Qwerty123', port=3306, db='web_barang_hilang')
     cursor = conn.cursor(MySQLdb.cursors.DictCursor)
 
     three_days_ago = datetime.now() - timedelta(days=3)
