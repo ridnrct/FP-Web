@@ -234,6 +234,7 @@ def add_item():
         if request.method == 'POST':
             title = request.form['title']
             description = request.form['description']
+            flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
             
             # Tentukan email berdasarkan sesi
             if 'loggedin' in session:
@@ -263,7 +264,6 @@ def add_item():
                     
                     cursor.close()
                     notify_admin()
-                    flash('Pengajuan item berhasil! Menunggu persetujuan admin. Item akan terhapus otomatis setelah tiga hari ditampilkan.', 'success')
             return redirect(url_for('dashboard'))
         return redirect(url_for('additem'))
     return redirect(url_for('login'))
